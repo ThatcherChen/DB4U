@@ -1,8 +1,0 @@
-SELECT=1
-FROM=2
-ID=3
-COMMA=4
-SEMICOLON=5
-WS=6
-','=4
-';'=5
