@@ -17,10 +17,10 @@ public class SQLSyntaxParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		SELECT=1, FROM=2, CREATE=3, TABLE=4, IF=5, NOT=6, EXISTS=7, ID=8, OPEN_P=9, 
-		CLOSE_P=10, COMMA=11, SEMICOLON=12, T_DATETIME=13, T_DOUBLE=14, T_FLOAT=15, 
-		T_INT=16, T_INTEGER=17, T_STRING=18, T_TIMESTAMP=19, T_LONG=20, T_BOOLEAN=21, 
-		T_BOOL=22, WS=23;
+		SELECT=1, FROM=2, CREATE=3, TABLE=4, IF=5, NOT=6, EXISTS=7, DATETIME=8, 
+		DOUBLE=9, FLOAT=10, INT=11, INTEGER=12, STRING=13, TIMESTAMP=14, LONG=15, 
+		BOOLEAN=16, BOOL=17, ID=18, OPEN_P=19, CLOSE_P=20, COMMA=21, SEMICOLON=22, 
+		WS=23;
 	public static final int
 		RULE_prog = 0, RULE_stat = 1, RULE_dtype = 2, RULE_tableName = 3, RULE_columnName = 4, 
 		RULE_identifierGroup = 5, RULE_tableColumnItem = 6, RULE_tableColumns = 7, 
@@ -35,17 +35,16 @@ public class SQLSyntaxParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, "'('", "')'", "','", 
-			"';'"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, "'('", "')'", "','", "';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "SELECT", "FROM", "CREATE", "TABLE", "IF", "NOT", "EXISTS", "ID", 
-			"OPEN_P", "CLOSE_P", "COMMA", "SEMICOLON", "T_DATETIME", "T_DOUBLE", 
-			"T_FLOAT", "T_INT", "T_INTEGER", "T_STRING", "T_TIMESTAMP", "T_LONG", 
-			"T_BOOLEAN", "T_BOOL", "WS"
+			null, "SELECT", "FROM", "CREATE", "TABLE", "IF", "NOT", "EXISTS", "DATETIME", 
+			"DOUBLE", "FLOAT", "INT", "INTEGER", "STRING", "TIMESTAMP", "LONG", "BOOLEAN", 
+			"BOOL", "ID", "OPEN_P", "CLOSE_P", "COMMA", "SEMICOLON", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -205,16 +204,16 @@ public class SQLSyntaxParser extends Parser {
 	}
 
 	public static class DtypeContext extends ParserRuleContext {
-		public TerminalNode T_DATETIME() { return getToken(SQLSyntaxParser.T_DATETIME, 0); }
-		public TerminalNode T_DOUBLE() { return getToken(SQLSyntaxParser.T_DOUBLE, 0); }
-		public TerminalNode T_FLOAT() { return getToken(SQLSyntaxParser.T_FLOAT, 0); }
-		public TerminalNode T_INT() { return getToken(SQLSyntaxParser.T_INT, 0); }
-		public TerminalNode T_INTEGER() { return getToken(SQLSyntaxParser.T_INTEGER, 0); }
-		public TerminalNode T_STRING() { return getToken(SQLSyntaxParser.T_STRING, 0); }
-		public TerminalNode T_TIMESTAMP() { return getToken(SQLSyntaxParser.T_TIMESTAMP, 0); }
-		public TerminalNode T_LONG() { return getToken(SQLSyntaxParser.T_LONG, 0); }
-		public TerminalNode T_BOOLEAN() { return getToken(SQLSyntaxParser.T_BOOLEAN, 0); }
-		public TerminalNode T_BOOL() { return getToken(SQLSyntaxParser.T_BOOL, 0); }
+		public TerminalNode DATETIME() { return getToken(SQLSyntaxParser.DATETIME, 0); }
+		public TerminalNode DOUBLE() { return getToken(SQLSyntaxParser.DOUBLE, 0); }
+		public TerminalNode FLOAT() { return getToken(SQLSyntaxParser.FLOAT, 0); }
+		public TerminalNode INT() { return getToken(SQLSyntaxParser.INT, 0); }
+		public TerminalNode INTEGER() { return getToken(SQLSyntaxParser.INTEGER, 0); }
+		public TerminalNode STRING() { return getToken(SQLSyntaxParser.STRING, 0); }
+		public TerminalNode TIMESTAMP() { return getToken(SQLSyntaxParser.TIMESTAMP, 0); }
+		public TerminalNode LONG() { return getToken(SQLSyntaxParser.LONG, 0); }
+		public TerminalNode BOOLEAN() { return getToken(SQLSyntaxParser.BOOLEAN, 0); }
+		public TerminalNode BOOL() { return getToken(SQLSyntaxParser.BOOL, 0); }
 		public DtypeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -235,7 +234,7 @@ public class SQLSyntaxParser extends Parser {
 			{
 			setState(32);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T_DATETIME) | (1L << T_DOUBLE) | (1L << T_FLOAT) | (1L << T_INT) | (1L << T_INTEGER) | (1L << T_STRING) | (1L << T_TIMESTAMP) | (1L << T_LONG) | (1L << T_BOOLEAN) | (1L << T_BOOL))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DATETIME) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << INTEGER) | (1L << STRING) | (1L << TIMESTAMP) | (1L << LONG) | (1L << BOOLEAN) | (1L << BOOL))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -625,18 +624,18 @@ public class SQLSyntaxParser extends Parser {
 		"\f\t\f\3\2\3\2\5\2\33\n\2\3\2\3\2\3\3\3\3\5\3!\n\3\3\4\3\4\3\5\3\5\3\6"+
 		"\3\6\3\7\3\7\3\7\7\7,\n\7\f\7\16\7/\13\7\3\b\3\b\3\b\3\t\3\t\3\t\7\t\67"+
 		"\n\t\f\t\16\t:\13\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\f\3\f\3"+
-		"\f\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3\3\2\17\30\2B\2\30"+
-		"\3\2\2\2\4 \3\2\2\2\6\"\3\2\2\2\b$\3\2\2\2\n&\3\2\2\2\f(\3\2\2\2\16\60"+
-		"\3\2\2\2\20\63\3\2\2\2\22;\3\2\2\2\24?\3\2\2\2\26D\3\2\2\2\30\32\5\4\3"+
-		"\2\31\33\7\16\2\2\32\31\3\2\2\2\32\33\3\2\2\2\33\34\3\2\2\2\34\35\7\2"+
-		"\2\3\35\3\3\2\2\2\36!\5\24\13\2\37!\5\26\f\2 \36\3\2\2\2 \37\3\2\2\2!"+
-		"\5\3\2\2\2\"#\t\2\2\2#\7\3\2\2\2$%\7\n\2\2%\t\3\2\2\2&\'\7\n\2\2\'\13"+
-		"\3\2\2\2(-\7\n\2\2)*\7\r\2\2*,\7\n\2\2+)\3\2\2\2,/\3\2\2\2-+\3\2\2\2-"+
-		".\3\2\2\2.\r\3\2\2\2/-\3\2\2\2\60\61\5\n\6\2\61\62\5\6\4\2\62\17\3\2\2"+
-		"\2\638\5\16\b\2\64\65\7\r\2\2\65\67\5\16\b\2\66\64\3\2\2\2\67:\3\2\2\2"+
-		"8\66\3\2\2\289\3\2\2\29\21\3\2\2\2:8\3\2\2\2;<\7\13\2\2<=\5\20\t\2=>\7"+
-		"\f\2\2>\23\3\2\2\2?@\7\3\2\2@A\5\f\7\2AB\7\4\2\2BC\5\b\5\2C\25\3\2\2\2"+
-		"DE\7\5\2\2EF\7\6\2\2FG\5\b\5\2GH\5\22\n\2H\27\3\2\2\2\6\32 -8";
+		"\f\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3\3\2\n\23\2B\2\30\3"+
+		"\2\2\2\4 \3\2\2\2\6\"\3\2\2\2\b$\3\2\2\2\n&\3\2\2\2\f(\3\2\2\2\16\60\3"+
+		"\2\2\2\20\63\3\2\2\2\22;\3\2\2\2\24?\3\2\2\2\26D\3\2\2\2\30\32\5\4\3\2"+
+		"\31\33\7\30\2\2\32\31\3\2\2\2\32\33\3\2\2\2\33\34\3\2\2\2\34\35\7\2\2"+
+		"\3\35\3\3\2\2\2\36!\5\24\13\2\37!\5\26\f\2 \36\3\2\2\2 \37\3\2\2\2!\5"+
+		"\3\2\2\2\"#\t\2\2\2#\7\3\2\2\2$%\7\24\2\2%\t\3\2\2\2&\'\7\24\2\2\'\13"+
+		"\3\2\2\2(-\7\24\2\2)*\7\27\2\2*,\7\24\2\2+)\3\2\2\2,/\3\2\2\2-+\3\2\2"+
+		"\2-.\3\2\2\2.\r\3\2\2\2/-\3\2\2\2\60\61\5\n\6\2\61\62\5\6\4\2\62\17\3"+
+		"\2\2\2\638\5\16\b\2\64\65\7\27\2\2\65\67\5\16\b\2\66\64\3\2\2\2\67:\3"+
+		"\2\2\28\66\3\2\2\289\3\2\2\29\21\3\2\2\2:8\3\2\2\2;<\7\25\2\2<=\5\20\t"+
+		"\2=>\7\26\2\2>\23\3\2\2\2?@\7\3\2\2@A\5\f\7\2AB\7\4\2\2BC\5\b\5\2C\25"+
+		"\3\2\2\2DE\7\5\2\2EF\7\6\2\2FG\5\b\5\2GH\5\22\n\2H\27\3\2\2\2\6\32 -8";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -20,16 +20,4 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
         }
         return builder.toString();
     }
-
-    @Override
-    public String visitTableName(SQLSyntaxParser.TableNameContext ctx) {
-        return ctx.ID().getText();
-    }
-
-    @Override
-    public String visitSelectStmt(SQLSyntaxParser.SelectStmtContext ctx) {
-        List<String> columns = Arrays.asList(visitIdentifierGroup(ctx.identifierGroup()).split(" "));
-        new CreateTableExecutor(visitTableName(ctx.tableName()), columns).execute();
-        return null;
-    }
 }

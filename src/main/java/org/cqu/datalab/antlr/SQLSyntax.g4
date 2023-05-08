@@ -8,18 +8,17 @@ stat    : selectStmt
         | createTableStmt
         ;
 
-dtype :
-       T_DATETIME
-     | T_DOUBLE
-     | T_FLOAT
-     | T_INT
-     | T_INTEGER
-     | T_STRING
-     | T_TIMESTAMP
-     | T_LONG
-     | T_BOOLEAN
-     | T_BOOL
-     ;
+dtype   : DATETIME
+        | DOUBLE
+        | FLOAT
+        | INT
+        | INTEGER
+        | STRING
+        | TIMESTAMP
+        | LONG
+        | BOOLEAN
+        | BOOL
+        ;
 
 tableName       : ID ;
 columnName      : ID ;
