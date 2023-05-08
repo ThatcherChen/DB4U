@@ -8,10 +8,27 @@ stat    : selectStmt
         | createTableStmt
         ;
 
-identifierGroup : ID (COMMA ID)* ;
+dtype :
+       T_DATETIME
+     | T_DOUBLE
+     | T_FLOAT
+     | T_INT
+     | T_INTEGER
+     | T_STRING
+     | T_TIMESTAMP
+     | T_LONG
+     | T_BOOLEAN
+     | T_BOOL
+     ;
 
-tableDefinition : OPEN_P identifierGroup CLOSE_P ;
 tableName       : ID ;
+columnName      : ID ;
+
+identifierGroup : ID (COMMA ID)* ;
+tableColumnItem : columnName dtype;
+tableColumns    : tableColumnItem (COMMA tableColumnItem)* ;
+
+tableDefinition : OPEN_P tableColumns CLOSE_P ;
 
 selectStmt      : SELECT identifierGroup FROM tableName ;
 createTableStmt : CREATE TABLE tableName tableDefinition ;

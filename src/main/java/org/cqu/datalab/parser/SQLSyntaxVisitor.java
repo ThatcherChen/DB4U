@@ -23,11 +23,11 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStat(SQLSyntaxParser.StatContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SQLSyntaxParser#identifierGroup}.
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#dtype}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIdentifierGroup(SQLSyntaxParser.IdentifierGroupContext ctx);
+	T visitDtype(SQLSyntaxParser.DtypeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableName}.
 	 * @param ctx the parse tree
@@ -35,9 +35,45 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTableName(SQLSyntaxParser.TableNameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#columnName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitColumnName(SQLSyntaxParser.ColumnNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#identifierGroup}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifierGroup(SQLSyntaxParser.IdentifierGroupContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableColumnItem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTableColumnItem(SQLSyntaxParser.TableColumnItemContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableColumns}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTableColumns(SQLSyntaxParser.TableColumnsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTableDefinition(SQLSyntaxParser.TableDefinitionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#selectStmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSelectStmt(SQLSyntaxParser.SelectStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#createTableStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateTableStmt(SQLSyntaxParser.CreateTableStmtContext ctx);
 }

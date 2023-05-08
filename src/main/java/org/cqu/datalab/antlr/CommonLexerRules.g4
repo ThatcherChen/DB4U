@@ -15,6 +15,17 @@ CLOSE_P     : ')' ;
 COMMA       : ',' ;
 SEMICOLON   : ';' ;
 
+T_DATETIME  : D A T E T I M E ;
+T_DOUBLE    : D O U B L E ;
+T_FLOAT     : F L O A T ;
+T_INT       : I N T ;
+T_INTEGER   : I N T E G E R ;
+T_STRING    : S T R I N G ;
+T_TIMESTAMP : T I M E S T A M P ;
+T_LONG      : L O N G ;
+T_BOOLEAN   : B O O L E A N ;
+T_BOOL      : B O O L ;
+
 WS          : [ \t\n] -> skip ;
 
 fragment DIGITAL    : [0-9] ;
