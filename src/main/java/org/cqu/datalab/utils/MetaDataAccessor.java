@@ -17,8 +17,8 @@ public class MetaDataAccessor {
         metaData = DEFAULT_METADATA;
         try {
             metaDataInput = new FileInputStream(metaData);
-            metaDataOutput = new FileOutputStream(metaData);
             loadIntoBuffer();
+            metaDataOutput = new FileOutputStream(metaData);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError();
@@ -29,17 +29,22 @@ public class MetaDataAccessor {
         this.metaData = metaData;
         try {
             metaDataInput = new FileInputStream(metaData);
-            metaDataOutput = new FileOutputStream(metaData);
             loadIntoBuffer();
+            metaDataOutput = new FileOutputStream(metaData);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError();
         }
     }
 
-    private void loadIntoBuffer() {
-        Scanner tmpScanner = new Scanner(metaDataInput);
-        while (tmpScanner.hasNext()) metaBuffer.append(tmpScanner.nextLine());
+    private void loadIntoBuffer() throws IOException {
+        byte[] bytes = new byte[512];
+        int readBytes = 0;
+        while (metaDataInput.available() > 0) {
+            readBytes += metaDataInput.read(bytes);
+            String tmpStr = new String(bytes, 0, readBytes, StandardCharsets.UTF_8);
+            metaBuffer.append(tmpStr);
+        }
     }
 
     public boolean sync() {

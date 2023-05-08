@@ -14,5 +14,6 @@ public class CreateTableExecutor implements AbstractExecutor {
     @Override
     public void execute() {
         DatabaseAccessor accessor = new DatabaseAccessor();
+        accessor.createTable(tableName, columns);
     }
 }
