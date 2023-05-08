@@ -1,5 +1,5 @@
 package org.cqu.datalab.executor;
 
-public abstract class AbstractExecutor {
-
+public interface AbstractExecutor {
+    public void execute();
 }

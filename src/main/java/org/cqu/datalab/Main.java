@@ -3,7 +3,7 @@ package org.cqu.datalab;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.cqu.datalab.parser.DBVisitor;
+import org.cqu.datalab.visitor.DBVisitor;
 import org.cqu.datalab.parser.SQLSyntaxLexer;
 import org.cqu.datalab.parser.SQLSyntaxParser;
 
