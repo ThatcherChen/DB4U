@@ -59,11 +59,23 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTableColumns(SQLSyntaxParser.TableColumnsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#valueCols}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValueCols(SQLSyntaxParser.ValueColsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitTableDefinition(SQLSyntaxParser.TableDefinitionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#valueDefinition}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValueDefinition(SQLSyntaxParser.ValueDefinitionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#selectStmt}.
 	 * @param ctx the parse tree
@@ -82,4 +94,10 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDropTableStmt(SQLSyntaxParser.DropTableStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#insertStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInsertStmt(SQLSyntaxParser.InsertStmtContext ctx);
 }

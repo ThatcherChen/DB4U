@@ -3,6 +3,7 @@ package org.cqu.datalab.visitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.cqu.datalab.executor.CreateTableExecutor;
 import org.cqu.datalab.executor.DropTableExecutor;
+import org.cqu.datalab.executor.InsertExecutor;
 import org.cqu.datalab.executor.SelectExecutor;
 import org.cqu.datalab.parser.SQLSyntaxBaseVisitor;
 import org.cqu.datalab.parser.SQLSyntaxParser;
@@ -62,6 +63,29 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
         List<String> columns = Arrays.asList(visitTableDefinition(ctx.tableDefinition()).split("/"));
         new CreateTableExecutor(visitTableName(ctx.tableName()), columns).execute();
         return null;
+    }
+
+    @Override
+    public String visitValueCols(SQLSyntaxParser.ValueColsContext ctx) {
+        StringBuilder builder = new StringBuilder();
+        for (TerminalNode node : ctx.ID()) {
+            builder.append(node.getText());
+            builder.append(",");
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public String visitValueDefinition(SQLSyntaxParser.ValueDefinitionContext ctx) {
+        return visitValueCols(ctx.valueCols());
+    }
+
+    @Override
+    public String visitInsertStmt(SQLSyntaxParser.InsertStmtContext ctx) {
+        String rowData = visitValueDefinition(ctx.valueDefinition());
+        List<String> valueList = Arrays.asList(rowData.split(","));
+        new InsertExecutor(visitTableName(ctx.tableName()), valueList).execute();
+        return super.visitInsertStmt(ctx);
     }
 
     @Override
