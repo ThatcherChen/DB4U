@@ -7,11 +7,22 @@ import java.util.*;
 public class MetaDataAccessor {
     private static final String DEFAULT_METADATA = "/home/czc/WorkSpace/DataProject2/database/metaData.csv";
     private static final int SYNC_BOUND_COUNT = 5;
+    private static final MetaDataAccessor accessor = new MetaDataAccessor();
     private final String metaData;
     private final FileInputStream metaDataInput;
     private final FileOutputStream metaDataOutput;
     private final StringBuffer metaBuffer = new StringBuffer();
     private int changeCount = 0;
+
+    public static MetaDataAccessor getAccessor() {
+        return accessor;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        sync();
+        super.finalize();
+    }
 
     public MetaDataAccessor() throws ExceptionInInitializerError{
         metaData = DEFAULT_METADATA;
@@ -19,6 +30,7 @@ public class MetaDataAccessor {
             metaDataInput = new FileInputStream(metaData);
             loadIntoBuffer();
             metaDataOutput = new FileOutputStream(metaData);
+            sync();
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError();
@@ -31,6 +43,7 @@ public class MetaDataAccessor {
             metaDataInput = new FileInputStream(metaData);
             loadIntoBuffer();
             metaDataOutput = new FileOutputStream(metaData);
+            sync();
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError();

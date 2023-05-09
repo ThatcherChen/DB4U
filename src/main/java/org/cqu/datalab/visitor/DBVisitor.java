@@ -1,14 +1,13 @@
 package org.cqu.datalab.visitor;
 
-import jdk.nashorn.internal.runtime.regexp.joni.ast.StringNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.cqu.datalab.executor.CreateTableExecutor;
+import org.cqu.datalab.executor.SelectExecutor;
 import org.cqu.datalab.parser.SQLSyntaxBaseVisitor;
 import org.cqu.datalab.parser.SQLSyntaxParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
@@ -62,5 +61,12 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
         List<String> columns = Arrays.asList(visitTableDefinition(ctx.tableDefinition()).split("/"));
         new CreateTableExecutor(visitTableName(ctx.tableName()), columns).execute();
         return null;
+    }
+
+    @Override
+    public String visitSelectStmt(SQLSyntaxParser.SelectStmtContext ctx) {
+        List<String> identifiers = new ArrayList<>(Arrays.asList(visitIdentifierGroup(ctx.identifierGroup()).split(" ")));
+        new SelectExecutor(visitTableName(ctx.tableName()), identifiers).execute();
+        return super.visitSelectStmt(ctx);
     }
 }

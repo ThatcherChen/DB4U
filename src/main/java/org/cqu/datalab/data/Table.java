@@ -2,23 +2,50 @@ package org.cqu.datalab.data;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Table {
+    private static final int SYNC_BOUND_COUNT = 5;
     private final File self;
-    private final FileInputStream reader;
-    private final FileOutputStream writer;
+    private final StringBuffer dataBuffer = new StringBuffer();
+    private final FileInputStream inputStream;
+    private final FileOutputStream outputStream;
+    private int changeCount = 0;
 
-    public Table(File self, FileInputStream reader, FileOutputStream writer) {
+    public Table(File self) throws ExceptionInInitializerError {
         this.self = self;
-        this.reader = reader;
-        this.writer = writer;
+        try {
+            inputStream = new FileInputStream(self);
+            loadIntoBuffer();
+            outputStream = new FileOutputStream(self);
+            sync();
+        } catch (IOException e) {
+            throw new ExceptionInInitializerError(e.toString());
+        }
     }
 
-    public boolean insert(List<String> columns) {
+    private void loadIntoBuffer() throws IOException{
+        byte[] bytes = new byte[512];
+        int readBytes = 0;
+        while (inputStream.available() > 0) {
+            readBytes += inputStream.read(bytes);
+            String tmpStr = new String(bytes, 0, readBytes, StandardCharsets.UTF_8);
+            dataBuffer.append(tmpStr);
+        }
+    }
+
+    public void sync() {
+        try {
+            outputStream.write(dataBuffer.toString().getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(List<String> columns) {
         try {
             StringBuilder builder = new StringBuilder();
             for (String column : columns) {
@@ -27,23 +54,28 @@ public class Table {
             }
             builder.deleteCharAt(builder.length()-1);
             builder.append("\n");
-            writer.write(builder.toString().getBytes(StandardCharsets.UTF_8));
-            return true;
+            dataBuffer.append(builder);
+            sync();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public List<String> read() {
-        Scanner scanner = new Scanner(reader);
-        String line = null;
-        if (scanner.hasNext()) line = scanner.nextLine();
-        if (line != null) return new ArrayList<>(Arrays.asList(line.split(",")));
-        else return null;
+    public List<String> select(Function<String,String> mapper, Predicate<String> condition) {
+        List<String> result = new ArrayList<>();
+        Scanner scanner = new Scanner(dataBuffer.toString());
+        while (scanner.hasNext()) {
+            result.add(scanner.nextLine());
+        }
+        result = result.stream().filter(condition).map(mapper).collect(Collectors.toList());
+        return result;
     }
 
-    public boolean drop() {
-        return false;
+    public void drop(Predicate<String> condition) {
+        List<String> result = new ArrayList<>();
+        Scanner scanner = new Scanner(dataBuffer.toString());
+        while (scanner.hasNext()) {
+            result.add(scanner.nextLine());
+        }
     }
 }

@@ -47,17 +47,13 @@ public class DatabaseAccessor {
     }
 
     public Table getTable(String tableName) {
-        MetaDataAccessor metaDataAccessor = new MetaDataAccessor();
+        MetaDataAccessor metaDataAccessor = MetaDataAccessor.getAccessor();
         Map<String, String> property = metaDataAccessor.getTableProperty(tableName);
         if (property != null) {
             String fileName = property.get("FileName");
-            File tableFile = new File(fileName);
-            FileInputStream inputStream;
-            FileOutputStream outputStream;
+            File tableFile = new File(baseDir + fileName);
             try {
-                inputStream = new FileInputStream(tableFile);
-                outputStream = new FileOutputStream(tableFile, true);
-                return new Table(tableFile, inputStream, outputStream);
+                return new Table(tableFile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -66,7 +62,7 @@ public class DatabaseAccessor {
     }
 
     public boolean createTable(String tableName, List<String> columnsWithType) {
-        MetaDataAccessor metaDataAccessor = new MetaDataAccessor();
+        MetaDataAccessor metaDataAccessor = MetaDataAccessor.getAccessor();
         Map<String, String> property = metaDataAccessor.getTableProperty(tableName);
         if (property == null) {
             Random random = new Random();
@@ -94,7 +90,7 @@ public class DatabaseAccessor {
     }
 
     public boolean dropTable(String tableName) {
-        MetaDataAccessor accessor = new MetaDataAccessor();
+        MetaDataAccessor accessor = MetaDataAccessor.getAccessor();
         Map<String, String> property = accessor.getTableProperty(tableName);
         if (property != null) {
             File tableFile = new File(property.get("FileName"));

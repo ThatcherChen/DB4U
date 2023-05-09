@@ -31,3 +31,4 @@ tableDefinition : OPEN_P tableColumns CLOSE_P ;
 
 selectStmt      : SELECT identifierGroup FROM tableName ;
 createTableStmt : CREATE TABLE tableName tableDefinition ;
+showTables
