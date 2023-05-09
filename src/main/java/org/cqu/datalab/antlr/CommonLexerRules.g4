@@ -26,18 +26,25 @@ BOOLEAN   : B O O L E A N ;
 BOOL      : B O O L ;
 
 ID          : ID_PART ;
-VALUE       : ([a-zA-Z] | DIGITAL | '_')+ ;
 
 EQUAL       : '=' ;
 OPEN_P      : '(' ;
 CLOSE_P     : ')' ;
 COMMA       : ',' ;
 SEMICOLON   : ';' ;
+STAR        : '*' ;
+METAHEAD    : '!' ;
+
+
+INT_T       : DIGITAL+;
+L_S_STRING  : '\'' (('\'' '\'') | ('\\' '\'') | ~('\''))* '\'';
+L_D_STRING  : '"' (L_STR_ESC_D | .)*? '"';
 
 WS          : [ \t\n] -> skip ;
 
 fragment DIGITAL    : [0-9] ;
 fragment ID_PART    : [a-zA-Z] ([a-zA-Z] | DIGITAL | '_')*;
+fragment L_STR_ESC_D: '""' | '\\"' ;
 
 // To support case-insensitive keywords
 fragment A : ('a'|'A') ;

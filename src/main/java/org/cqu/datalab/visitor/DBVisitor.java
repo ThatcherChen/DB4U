@@ -1,10 +1,7 @@
 package org.cqu.datalab.visitor;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
-import org.cqu.datalab.executor.CreateTableExecutor;
-import org.cqu.datalab.executor.DropTableExecutor;
-import org.cqu.datalab.executor.InsertExecutor;
-import org.cqu.datalab.executor.SelectExecutor;
+import org.cqu.datalab.executor.*;
 import org.cqu.datalab.parser.SQLSyntaxBaseVisitor;
 import org.cqu.datalab.parser.SQLSyntaxParser;
 
@@ -15,6 +12,7 @@ import java.util.List;
 public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     @Override
     public String visitIdentifierGroup(SQLSyntaxParser.IdentifierGroupContext ctx) {
+        if (ctx.STAR() != null) return "*";
         StringBuilder builder = new StringBuilder();
         for (TerminalNode node : ctx.ID()) {
             builder.append(node.getText());
@@ -24,8 +22,14 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     }
 
     @Override
+    public String visitCommand(SQLSyntaxParser.CommandContext ctx) {
+        new CommandExecutor(ctx.getText()).execute();
+        return null;
+    }
+
+    @Override
     public String visitDtype(SQLSyntaxParser.DtypeContext ctx) {
-        return ctx.getText();
+        return ctx.getText().toLowerCase();
     }
 
     @Override
@@ -68,11 +72,31 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     @Override
     public String visitValueCols(SQLSyntaxParser.ValueColsContext ctx) {
         StringBuilder builder = new StringBuilder();
-        for (TerminalNode node : ctx.VALUE()) {
-            builder.append(node.getText());
+        for (SQLSyntaxParser.ExprAtomContext ctx_t : ctx.exprAtom()) {
+            builder.append(visitExprAtom(ctx_t));
             builder.append(",");
         }
         return builder.toString();
+    }
+
+    @Override
+    public String visitExprAtom(SQLSyntaxParser.ExprAtomContext ctx) {
+        if (ctx.int_t() != null) return visitInt_t(ctx.int_t()) + ":int";
+        else if (ctx.string_t() != null) {
+            String rowString = visitString_t(ctx.string_t());
+            return rowString.substring(1, rowString.length()-1) + ":string";
+        }
+        else return "";
+    }
+
+    @Override
+    public String visitInt_t(SQLSyntaxParser.Int_tContext ctx) {
+        return ctx.getText();
+    }
+
+    @Override
+    public String visitString_t(SQLSyntaxParser.String_tContext ctx) {
+        return ctx.getText();
     }
 
     @Override

@@ -27,6 +27,12 @@ public class SelectExecutor implements AbstractExecutor{
                     .map((varWithType) -> varWithType.substring(0, varWithType.indexOf(':')))
                     .collect(Collectors.toList());
 
+            // For star
+            if (identifiers.size() == 1 && "*".equals(identifiers.get(0))) {
+                identifiers.clear();
+                identifiers.addAll(allColumnNames);
+            }
+
             // Check before generate result
             if (!new HashSet<>(allColumnNames).containsAll(identifiers)) {
                 System.out.println("Error: Some properties do not exist.");
@@ -35,8 +41,10 @@ public class SelectExecutor implements AbstractExecutor{
 
             // Output column name
             identifiers.forEach((identifier) -> {
-                System.out.println(" " + identifier);
+                System.out.print(" " + identifier);
             });
+
+            System.out.println();
 
             List<String> result = fetchBackTable.select((line) -> {
                 String[] propertyGroup = line.split(",");

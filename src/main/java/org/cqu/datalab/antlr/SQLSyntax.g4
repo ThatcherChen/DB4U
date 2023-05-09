@@ -9,6 +9,7 @@ stat    : selectStmt
         | dropTableStmt
         | insertStmt
         | updateStmt
+        | metaCommand
         ;
 
 dtype   : DATETIME
@@ -23,19 +24,32 @@ dtype   : DATETIME
         | BOOL
         ;
 
+int_t   : INT_T;
+string_t: L_S_STRING
+        | L_D_STRING
+        ;
+
+exprAtom: string_t
+        | int_t
+        ;
+
 tableName       : ID ;
 columnName      : ID ;
+command         : ID ;
 
-identifierGroup : ID (COMMA ID)* ;
+identifierGroup : ID (COMMA ID)*
+                | STAR
+                ;
 tableColumnItem : columnName dtype;
 tableColumns    : tableColumnItem (COMMA tableColumnItem)* ;
-valueCols       : VALUE (COMMA VALUE)* ;
+valueCols       : exprAtom (COMMA exprAtom)* ;
 assignItem      : ID EQUAL ID;
 updateAssignment: assignItem (COMMA assignItem)* ;
 
 tableDefinition : OPEN_P tableColumns CLOSE_P ;
 valueDefinition : OPEN_P valueCols CLOSE_P ;
 
+metaCommand     : METAHEAD command;
 selectStmt      : SELECT identifierGroup FROM tableName ;
 createTableStmt : CREATE TABLE tableName tableDefinition ;
 dropTableStmt   : DROP TABLE tableName ;

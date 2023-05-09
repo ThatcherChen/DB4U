@@ -20,20 +20,23 @@ public class SQLSyntaxParser extends Parser {
 		SELECT=1, FROM=2, CREATE=3, TABLE=4, DROP=5, INSERT=6, VALUES=7, UPDATE=8, 
 		SET=9, INTO=10, IF=11, NOT=12, EXISTS=13, DATETIME=14, DOUBLE=15, FLOAT=16, 
 		INT=17, INTEGER=18, STRING=19, TIMESTAMP=20, LONG=21, BOOLEAN=22, BOOL=23, 
-		ID=24, VALUE=25, EQUAL=26, OPEN_P=27, CLOSE_P=28, COMMA=29, SEMICOLON=30, 
-		WS=31;
+		ID=24, EQUAL=25, OPEN_P=26, CLOSE_P=27, COMMA=28, SEMICOLON=29, STAR=30, 
+		METAHEAD=31, INT_T=32, L_S_STRING=33, L_D_STRING=34, WS=35;
 	public static final int
-		RULE_prog = 0, RULE_stat = 1, RULE_dtype = 2, RULE_tableName = 3, RULE_columnName = 4, 
-		RULE_identifierGroup = 5, RULE_tableColumnItem = 6, RULE_tableColumns = 7, 
-		RULE_valueCols = 8, RULE_assignItem = 9, RULE_updateAssignment = 10, RULE_tableDefinition = 11, 
-		RULE_valueDefinition = 12, RULE_selectStmt = 13, RULE_createTableStmt = 14, 
-		RULE_dropTableStmt = 15, RULE_insertStmt = 16, RULE_updateStmt = 17;
+		RULE_prog = 0, RULE_stat = 1, RULE_dtype = 2, RULE_int_t = 3, RULE_string_t = 4, 
+		RULE_exprAtom = 5, RULE_tableName = 6, RULE_columnName = 7, RULE_command = 8, 
+		RULE_identifierGroup = 9, RULE_tableColumnItem = 10, RULE_tableColumns = 11, 
+		RULE_valueCols = 12, RULE_assignItem = 13, RULE_updateAssignment = 14, 
+		RULE_tableDefinition = 15, RULE_valueDefinition = 16, RULE_metaCommand = 17, 
+		RULE_selectStmt = 18, RULE_createTableStmt = 19, RULE_dropTableStmt = 20, 
+		RULE_insertStmt = 21, RULE_updateStmt = 22;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"prog", "stat", "dtype", "tableName", "columnName", "identifierGroup", 
-			"tableColumnItem", "tableColumns", "valueCols", "assignItem", "updateAssignment", 
-			"tableDefinition", "valueDefinition", "selectStmt", "createTableStmt", 
-			"dropTableStmt", "insertStmt", "updateStmt"
+			"prog", "stat", "dtype", "int_t", "string_t", "exprAtom", "tableName", 
+			"columnName", "command", "identifierGroup", "tableColumnItem", "tableColumns", 
+			"valueCols", "assignItem", "updateAssignment", "tableDefinition", "valueDefinition", 
+			"metaCommand", "selectStmt", "createTableStmt", "dropTableStmt", "insertStmt", 
+			"updateStmt"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -42,7 +45,7 @@ public class SQLSyntaxParser extends Parser {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, "'='", "'('", "')'", "','", "';'"
+			null, "'='", "'('", "')'", "','", "';'", "'*'", "'!'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -51,8 +54,8 @@ public class SQLSyntaxParser extends Parser {
 			null, "SELECT", "FROM", "CREATE", "TABLE", "DROP", "INSERT", "VALUES", 
 			"UPDATE", "SET", "INTO", "IF", "NOT", "EXISTS", "DATETIME", "DOUBLE", 
 			"FLOAT", "INT", "INTEGER", "STRING", "TIMESTAMP", "LONG", "BOOLEAN", 
-			"BOOL", "ID", "VALUE", "EQUAL", "OPEN_P", "CLOSE_P", "COMMA", "SEMICOLON", 
-			"WS"
+			"BOOL", "ID", "EQUAL", "OPEN_P", "CLOSE_P", "COMMA", "SEMICOLON", "STAR", 
+			"METAHEAD", "INT_T", "L_S_STRING", "L_D_STRING", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -130,19 +133,19 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(36);
+			setState(46);
 			stat();
-			setState(38);
+			setState(48);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SEMICOLON) {
 				{
-				setState(37);
+				setState(47);
 				match(SEMICOLON);
 				}
 			}
 
-			setState(40);
+			setState(50);
 			match(EOF);
 			}
 		}
@@ -173,6 +176,9 @@ public class SQLSyntaxParser extends Parser {
 		public UpdateStmtContext updateStmt() {
 			return getRuleContext(UpdateStmtContext.class,0);
 		}
+		public MetaCommandContext metaCommand() {
+			return getRuleContext(MetaCommandContext.class,0);
+		}
 		public StatContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -188,42 +194,49 @@ public class SQLSyntaxParser extends Parser {
 		StatContext _localctx = new StatContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_stat);
 		try {
-			setState(47);
+			setState(58);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case SELECT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(42);
+				setState(52);
 				selectStmt();
 				}
 				break;
 			case CREATE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(43);
+				setState(53);
 				createTableStmt();
 				}
 				break;
 			case DROP:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(44);
+				setState(54);
 				dropTableStmt();
 				}
 				break;
 			case INSERT:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(45);
+				setState(55);
 				insertStmt();
 				}
 				break;
 			case UPDATE:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(46);
+				setState(56);
 				updateStmt();
+				}
+				break;
+			case METAHEAD:
+				enterOuterAlt(_localctx, 6);
+				{
+				setState(57);
+				metaCommand();
 				}
 				break;
 			default:
@@ -270,7 +283,7 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
+			setState(60);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DATETIME) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << INTEGER) | (1L << STRING) | (1L << TIMESTAMP) | (1L << LONG) | (1L << BOOLEAN) | (1L << BOOL))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -280,6 +293,139 @@ public class SQLSyntaxParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class Int_tContext extends ParserRuleContext {
+		public TerminalNode INT_T() { return getToken(SQLSyntaxParser.INT_T, 0); }
+		public Int_tContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_int_t; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLSyntaxVisitor ) return ((SQLSyntaxVisitor<? extends T>)visitor).visitInt_t(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final Int_tContext int_t() throws RecognitionException {
+		Int_tContext _localctx = new Int_tContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_int_t);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(62);
+			match(INT_T);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class String_tContext extends ParserRuleContext {
+		public TerminalNode L_S_STRING() { return getToken(SQLSyntaxParser.L_S_STRING, 0); }
+		public TerminalNode L_D_STRING() { return getToken(SQLSyntaxParser.L_D_STRING, 0); }
+		public String_tContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_string_t; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLSyntaxVisitor ) return ((SQLSyntaxVisitor<? extends T>)visitor).visitString_t(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final String_tContext string_t() throws RecognitionException {
+		String_tContext _localctx = new String_tContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_string_t);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(64);
+			_la = _input.LA(1);
+			if ( !(_la==L_S_STRING || _la==L_D_STRING) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ExprAtomContext extends ParserRuleContext {
+		public String_tContext string_t() {
+			return getRuleContext(String_tContext.class,0);
+		}
+		public Int_tContext int_t() {
+			return getRuleContext(Int_tContext.class,0);
+		}
+		public ExprAtomContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_exprAtom; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLSyntaxVisitor ) return ((SQLSyntaxVisitor<? extends T>)visitor).visitExprAtom(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final ExprAtomContext exprAtom() throws RecognitionException {
+		ExprAtomContext _localctx = new ExprAtomContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_exprAtom);
+		try {
+			setState(68);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case L_S_STRING:
+			case L_D_STRING:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(66);
+				string_t();
+				}
+				break;
+			case INT_T:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(67);
+				int_t();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -308,11 +454,11 @@ public class SQLSyntaxParser extends Parser {
 
 	public final TableNameContext tableName() throws RecognitionException {
 		TableNameContext _localctx = new TableNameContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_tableName);
+		enterRule(_localctx, 12, RULE_tableName);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(51);
+			setState(70);
 			match(ID);
 			}
 		}
@@ -342,11 +488,45 @@ public class SQLSyntaxParser extends Parser {
 
 	public final ColumnNameContext columnName() throws RecognitionException {
 		ColumnNameContext _localctx = new ColumnNameContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_columnName);
+		enterRule(_localctx, 14, RULE_columnName);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(53);
+			setState(72);
+			match(ID);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class CommandContext extends ParserRuleContext {
+		public TerminalNode ID() { return getToken(SQLSyntaxParser.ID, 0); }
+		public CommandContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_command; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLSyntaxVisitor ) return ((SQLSyntaxVisitor<? extends T>)visitor).visitCommand(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final CommandContext command() throws RecognitionException {
+		CommandContext _localctx = new CommandContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_command);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(74);
 			match(ID);
 			}
 		}
@@ -370,6 +550,7 @@ public class SQLSyntaxParser extends Parser {
 		public TerminalNode COMMA(int i) {
 			return getToken(SQLSyntaxParser.COMMA, i);
 		}
+		public TerminalNode STAR() { return getToken(SQLSyntaxParser.STAR, 0); }
 		public IdentifierGroupContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -383,29 +564,44 @@ public class SQLSyntaxParser extends Parser {
 
 	public final IdentifierGroupContext identifierGroup() throws RecognitionException {
 		IdentifierGroupContext _localctx = new IdentifierGroupContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_identifierGroup);
+		enterRule(_localctx, 18, RULE_identifierGroup);
 		int _la;
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(55);
-			match(ID);
-			setState(60);
+			setState(85);
 			_errHandler.sync(this);
-			_la = _input.LA(1);
-			while (_la==COMMA) {
+			switch (_input.LA(1)) {
+			case ID:
+				enterOuterAlt(_localctx, 1);
 				{
-				{
-				setState(56);
-				match(COMMA);
-				setState(57);
+				setState(76);
 				match(ID);
-				}
-				}
-				setState(62);
+				setState(81);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
+				while (_la==COMMA) {
+					{
+					{
+					setState(77);
+					match(COMMA);
+					setState(78);
+					match(ID);
+					}
+					}
+					setState(83);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				}
+				}
+				break;
+			case STAR:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(84);
+				match(STAR);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -439,13 +635,13 @@ public class SQLSyntaxParser extends Parser {
 
 	public final TableColumnItemContext tableColumnItem() throws RecognitionException {
 		TableColumnItemContext _localctx = new TableColumnItemContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_tableColumnItem);
+		enterRule(_localctx, 20, RULE_tableColumnItem);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(63);
+			setState(87);
 			columnName();
-			setState(64);
+			setState(88);
 			dtype();
 			}
 		}
@@ -484,26 +680,26 @@ public class SQLSyntaxParser extends Parser {
 
 	public final TableColumnsContext tableColumns() throws RecognitionException {
 		TableColumnsContext _localctx = new TableColumnsContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_tableColumns);
+		enterRule(_localctx, 22, RULE_tableColumns);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(66);
+			setState(90);
 			tableColumnItem();
-			setState(71);
+			setState(95);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(67);
+				setState(91);
 				match(COMMA);
-				setState(68);
+				setState(92);
 				tableColumnItem();
 				}
 				}
-				setState(73);
+				setState(97);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -521,9 +717,11 @@ public class SQLSyntaxParser extends Parser {
 	}
 
 	public static class ValueColsContext extends ParserRuleContext {
-		public List<TerminalNode> VALUE() { return getTokens(SQLSyntaxParser.VALUE); }
-		public TerminalNode VALUE(int i) {
-			return getToken(SQLSyntaxParser.VALUE, i);
+		public List<ExprAtomContext> exprAtom() {
+			return getRuleContexts(ExprAtomContext.class);
+		}
+		public ExprAtomContext exprAtom(int i) {
+			return getRuleContext(ExprAtomContext.class,i);
 		}
 		public List<TerminalNode> COMMA() { return getTokens(SQLSyntaxParser.COMMA); }
 		public TerminalNode COMMA(int i) {
@@ -542,26 +740,26 @@ public class SQLSyntaxParser extends Parser {
 
 	public final ValueColsContext valueCols() throws RecognitionException {
 		ValueColsContext _localctx = new ValueColsContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_valueCols);
+		enterRule(_localctx, 24, RULE_valueCols);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(74);
-			match(VALUE);
-			setState(79);
+			setState(98);
+			exprAtom();
+			setState(103);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(75);
+				setState(99);
 				match(COMMA);
-				setState(76);
-				match(VALUE);
+				setState(100);
+				exprAtom();
 				}
 				}
-				setState(81);
+				setState(105);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -597,15 +795,15 @@ public class SQLSyntaxParser extends Parser {
 
 	public final AssignItemContext assignItem() throws RecognitionException {
 		AssignItemContext _localctx = new AssignItemContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_assignItem);
+		enterRule(_localctx, 26, RULE_assignItem);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82);
+			setState(106);
 			match(ID);
-			setState(83);
+			setState(107);
 			match(EQUAL);
-			setState(84);
+			setState(108);
 			match(ID);
 			}
 		}
@@ -644,26 +842,26 @@ public class SQLSyntaxParser extends Parser {
 
 	public final UpdateAssignmentContext updateAssignment() throws RecognitionException {
 		UpdateAssignmentContext _localctx = new UpdateAssignmentContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_updateAssignment);
+		enterRule(_localctx, 28, RULE_updateAssignment);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(86);
+			setState(110);
 			assignItem();
-			setState(91);
+			setState(115);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(87);
+				setState(111);
 				match(COMMA);
-				setState(88);
+				setState(112);
 				assignItem();
 				}
 				}
-				setState(93);
+				setState(117);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -699,15 +897,15 @@ public class SQLSyntaxParser extends Parser {
 
 	public final TableDefinitionContext tableDefinition() throws RecognitionException {
 		TableDefinitionContext _localctx = new TableDefinitionContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_tableDefinition);
+		enterRule(_localctx, 30, RULE_tableDefinition);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(94);
+			setState(118);
 			match(OPEN_P);
-			setState(95);
+			setState(119);
 			tableColumns();
-			setState(96);
+			setState(120);
 			match(CLOSE_P);
 			}
 		}
@@ -741,16 +939,55 @@ public class SQLSyntaxParser extends Parser {
 
 	public final ValueDefinitionContext valueDefinition() throws RecognitionException {
 		ValueDefinitionContext _localctx = new ValueDefinitionContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_valueDefinition);
+		enterRule(_localctx, 32, RULE_valueDefinition);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(98);
+			setState(122);
 			match(OPEN_P);
-			setState(99);
+			setState(123);
 			valueCols();
-			setState(100);
+			setState(124);
 			match(CLOSE_P);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class MetaCommandContext extends ParserRuleContext {
+		public TerminalNode METAHEAD() { return getToken(SQLSyntaxParser.METAHEAD, 0); }
+		public CommandContext command() {
+			return getRuleContext(CommandContext.class,0);
+		}
+		public MetaCommandContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_metaCommand; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLSyntaxVisitor ) return ((SQLSyntaxVisitor<? extends T>)visitor).visitMetaCommand(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final MetaCommandContext metaCommand() throws RecognitionException {
+		MetaCommandContext _localctx = new MetaCommandContext(_ctx, getState());
+		enterRule(_localctx, 34, RULE_metaCommand);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(126);
+			match(METAHEAD);
+			setState(127);
+			command();
 			}
 		}
 		catch (RecognitionException re) {
@@ -786,17 +1023,17 @@ public class SQLSyntaxParser extends Parser {
 
 	public final SelectStmtContext selectStmt() throws RecognitionException {
 		SelectStmtContext _localctx = new SelectStmtContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_selectStmt);
+		enterRule(_localctx, 36, RULE_selectStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(102);
+			setState(129);
 			match(SELECT);
-			setState(103);
+			setState(130);
 			identifierGroup();
-			setState(104);
+			setState(131);
 			match(FROM);
-			setState(105);
+			setState(132);
 			tableName();
 			}
 		}
@@ -833,17 +1070,17 @@ public class SQLSyntaxParser extends Parser {
 
 	public final CreateTableStmtContext createTableStmt() throws RecognitionException {
 		CreateTableStmtContext _localctx = new CreateTableStmtContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_createTableStmt);
+		enterRule(_localctx, 38, RULE_createTableStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(107);
+			setState(134);
 			match(CREATE);
-			setState(108);
+			setState(135);
 			match(TABLE);
-			setState(109);
+			setState(136);
 			tableName();
-			setState(110);
+			setState(137);
 			tableDefinition();
 			}
 		}
@@ -877,15 +1114,15 @@ public class SQLSyntaxParser extends Parser {
 
 	public final DropTableStmtContext dropTableStmt() throws RecognitionException {
 		DropTableStmtContext _localctx = new DropTableStmtContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_dropTableStmt);
+		enterRule(_localctx, 40, RULE_dropTableStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(112);
+			setState(139);
 			match(DROP);
-			setState(113);
+			setState(140);
 			match(TABLE);
-			setState(114);
+			setState(141);
 			tableName();
 			}
 		}
@@ -923,19 +1160,19 @@ public class SQLSyntaxParser extends Parser {
 
 	public final InsertStmtContext insertStmt() throws RecognitionException {
 		InsertStmtContext _localctx = new InsertStmtContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_insertStmt);
+		enterRule(_localctx, 42, RULE_insertStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(116);
+			setState(143);
 			match(INSERT);
-			setState(117);
+			setState(144);
 			match(INTO);
-			setState(118);
+			setState(145);
 			tableName();
-			setState(119);
+			setState(146);
 			match(VALUES);
-			setState(120);
+			setState(147);
 			valueDefinition();
 			}
 		}
@@ -972,17 +1209,17 @@ public class SQLSyntaxParser extends Parser {
 
 	public final UpdateStmtContext updateStmt() throws RecognitionException {
 		UpdateStmtContext _localctx = new UpdateStmtContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_updateStmt);
+		enterRule(_localctx, 44, RULE_updateStmt);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(122);
+			setState(149);
 			match(UPDATE);
-			setState(123);
+			setState(150);
 			tableName();
-			setState(124);
+			setState(151);
 			match(SET);
-			setState(125);
+			setState(152);
 			updateAssignment();
 			}
 		}
@@ -998,36 +1235,46 @@ public class SQLSyntaxParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3!\u0082\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3%\u009d\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
-		"\4\23\t\23\3\2\3\2\5\2)\n\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\5\3\62\n\3\3\4"+
-		"\3\4\3\5\3\5\3\6\3\6\3\7\3\7\3\7\7\7=\n\7\f\7\16\7@\13\7\3\b\3\b\3\b\3"+
-		"\t\3\t\3\t\7\tH\n\t\f\t\16\tK\13\t\3\n\3\n\3\n\7\nP\n\n\f\n\16\nS\13\n"+
-		"\3\13\3\13\3\13\3\13\3\f\3\f\3\f\7\f\\\n\f\f\f\16\f_\13\f\3\r\3\r\3\r"+
-		"\3\r\3\16\3\16\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20"+
-		"\3\20\3\21\3\21\3\21\3\21\3\22\3\22\3\22\3\22\3\22\3\22\3\23\3\23\3\23"+
-		"\3\23\3\23\3\23\2\2\24\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$\2\3"+
-		"\3\2\20\31\2x\2&\3\2\2\2\4\61\3\2\2\2\6\63\3\2\2\2\b\65\3\2\2\2\n\67\3"+
-		"\2\2\2\f9\3\2\2\2\16A\3\2\2\2\20D\3\2\2\2\22L\3\2\2\2\24T\3\2\2\2\26X"+
-		"\3\2\2\2\30`\3\2\2\2\32d\3\2\2\2\34h\3\2\2\2\36m\3\2\2\2 r\3\2\2\2\"v"+
-		"\3\2\2\2$|\3\2\2\2&(\5\4\3\2\')\7 \2\2(\'\3\2\2\2()\3\2\2\2)*\3\2\2\2"+
-		"*+\7\2\2\3+\3\3\2\2\2,\62\5\34\17\2-\62\5\36\20\2.\62\5 \21\2/\62\5\""+
-		"\22\2\60\62\5$\23\2\61,\3\2\2\2\61-\3\2\2\2\61.\3\2\2\2\61/\3\2\2\2\61"+
-		"\60\3\2\2\2\62\5\3\2\2\2\63\64\t\2\2\2\64\7\3\2\2\2\65\66\7\32\2\2\66"+
-		"\t\3\2\2\2\678\7\32\2\28\13\3\2\2\29>\7\32\2\2:;\7\37\2\2;=\7\32\2\2<"+
-		":\3\2\2\2=@\3\2\2\2><\3\2\2\2>?\3\2\2\2?\r\3\2\2\2@>\3\2\2\2AB\5\n\6\2"+
-		"BC\5\6\4\2C\17\3\2\2\2DI\5\16\b\2EF\7\37\2\2FH\5\16\b\2GE\3\2\2\2HK\3"+
-		"\2\2\2IG\3\2\2\2IJ\3\2\2\2J\21\3\2\2\2KI\3\2\2\2LQ\7\33\2\2MN\7\37\2\2"+
-		"NP\7\33\2\2OM\3\2\2\2PS\3\2\2\2QO\3\2\2\2QR\3\2\2\2R\23\3\2\2\2SQ\3\2"+
-		"\2\2TU\7\32\2\2UV\7\34\2\2VW\7\32\2\2W\25\3\2\2\2X]\5\24\13\2YZ\7\37\2"+
-		"\2Z\\\5\24\13\2[Y\3\2\2\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^\27\3\2\2\2_"+
-		"]\3\2\2\2`a\7\35\2\2ab\5\20\t\2bc\7\36\2\2c\31\3\2\2\2de\7\35\2\2ef\5"+
-		"\22\n\2fg\7\36\2\2g\33\3\2\2\2hi\7\3\2\2ij\5\f\7\2jk\7\4\2\2kl\5\b\5\2"+
-		"l\35\3\2\2\2mn\7\5\2\2no\7\6\2\2op\5\b\5\2pq\5\30\r\2q\37\3\2\2\2rs\7"+
-		"\7\2\2st\7\6\2\2tu\5\b\5\2u!\3\2\2\2vw\7\b\2\2wx\7\f\2\2xy\5\b\5\2yz\7"+
-		"\t\2\2z{\5\32\16\2{#\3\2\2\2|}\7\n\2\2}~\5\b\5\2~\177\7\13\2\2\177\u0080"+
-		"\5\26\f\2\u0080%\3\2\2\2\b(\61>IQ]";
+		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\3\2\3\2\5"+
+		"\2\63\n\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\5\3=\n\3\3\4\3\4\3\5\3\5\3\6"+
+		"\3\6\3\7\3\7\5\7G\n\7\3\b\3\b\3\t\3\t\3\n\3\n\3\13\3\13\3\13\7\13R\n\13"+
+		"\f\13\16\13U\13\13\3\13\5\13X\n\13\3\f\3\f\3\f\3\r\3\r\3\r\7\r`\n\r\f"+
+		"\r\16\rc\13\r\3\16\3\16\3\16\7\16h\n\16\f\16\16\16k\13\16\3\17\3\17\3"+
+		"\17\3\17\3\20\3\20\3\20\7\20t\n\20\f\20\16\20w\13\20\3\21\3\21\3\21\3"+
+		"\21\3\22\3\22\3\22\3\22\3\23\3\23\3\23\3\24\3\24\3\24\3\24\3\24\3\25\3"+
+		"\25\3\25\3\25\3\25\3\26\3\26\3\26\3\26\3\27\3\27\3\27\3\27\3\27\3\27\3"+
+		"\30\3\30\3\30\3\30\3\30\3\30\2\2\31\2\4\6\b\n\f\16\20\22\24\26\30\32\34"+
+		"\36 \"$&(*,.\2\4\3\2\20\31\3\2#$\2\u0091\2\60\3\2\2\2\4<\3\2\2\2\6>\3"+
+		"\2\2\2\b@\3\2\2\2\nB\3\2\2\2\fF\3\2\2\2\16H\3\2\2\2\20J\3\2\2\2\22L\3"+
+		"\2\2\2\24W\3\2\2\2\26Y\3\2\2\2\30\\\3\2\2\2\32d\3\2\2\2\34l\3\2\2\2\36"+
+		"p\3\2\2\2 x\3\2\2\2\"|\3\2\2\2$\u0080\3\2\2\2&\u0083\3\2\2\2(\u0088\3"+
+		"\2\2\2*\u008d\3\2\2\2,\u0091\3\2\2\2.\u0097\3\2\2\2\60\62\5\4\3\2\61\63"+
+		"\7\37\2\2\62\61\3\2\2\2\62\63\3\2\2\2\63\64\3\2\2\2\64\65\7\2\2\3\65\3"+
+		"\3\2\2\2\66=\5&\24\2\67=\5(\25\28=\5*\26\29=\5,\27\2:=\5.\30\2;=\5$\23"+
+		"\2<\66\3\2\2\2<\67\3\2\2\2<8\3\2\2\2<9\3\2\2\2<:\3\2\2\2<;\3\2\2\2=\5"+
+		"\3\2\2\2>?\t\2\2\2?\7\3\2\2\2@A\7\"\2\2A\t\3\2\2\2BC\t\3\2\2C\13\3\2\2"+
+		"\2DG\5\n\6\2EG\5\b\5\2FD\3\2\2\2FE\3\2\2\2G\r\3\2\2\2HI\7\32\2\2I\17\3"+
+		"\2\2\2JK\7\32\2\2K\21\3\2\2\2LM\7\32\2\2M\23\3\2\2\2NS\7\32\2\2OP\7\36"+
+		"\2\2PR\7\32\2\2QO\3\2\2\2RU\3\2\2\2SQ\3\2\2\2ST\3\2\2\2TX\3\2\2\2US\3"+
+		"\2\2\2VX\7 \2\2WN\3\2\2\2WV\3\2\2\2X\25\3\2\2\2YZ\5\20\t\2Z[\5\6\4\2["+
+		"\27\3\2\2\2\\a\5\26\f\2]^\7\36\2\2^`\5\26\f\2_]\3\2\2\2`c\3\2\2\2a_\3"+
+		"\2\2\2ab\3\2\2\2b\31\3\2\2\2ca\3\2\2\2di\5\f\7\2ef\7\36\2\2fh\5\f\7\2"+
+		"ge\3\2\2\2hk\3\2\2\2ig\3\2\2\2ij\3\2\2\2j\33\3\2\2\2ki\3\2\2\2lm\7\32"+
+		"\2\2mn\7\33\2\2no\7\32\2\2o\35\3\2\2\2pu\5\34\17\2qr\7\36\2\2rt\5\34\17"+
+		"\2sq\3\2\2\2tw\3\2\2\2us\3\2\2\2uv\3\2\2\2v\37\3\2\2\2wu\3\2\2\2xy\7\34"+
+		"\2\2yz\5\30\r\2z{\7\35\2\2{!\3\2\2\2|}\7\34\2\2}~\5\32\16\2~\177\7\35"+
+		"\2\2\177#\3\2\2\2\u0080\u0081\7!\2\2\u0081\u0082\5\22\n\2\u0082%\3\2\2"+
+		"\2\u0083\u0084\7\3\2\2\u0084\u0085\5\24\13\2\u0085\u0086\7\4\2\2\u0086"+
+		"\u0087\5\16\b\2\u0087\'\3\2\2\2\u0088\u0089\7\5\2\2\u0089\u008a\7\6\2"+
+		"\2\u008a\u008b\5\16\b\2\u008b\u008c\5 \21\2\u008c)\3\2\2\2\u008d\u008e"+
+		"\7\7\2\2\u008e\u008f\7\6\2\2\u008f\u0090\5\16\b\2\u0090+\3\2\2\2\u0091"+
+		"\u0092\7\b\2\2\u0092\u0093\7\f\2\2\u0093\u0094\5\16\b\2\u0094\u0095\7"+
+		"\t\2\2\u0095\u0096\5\"\22\2\u0096-\3\2\2\2\u0097\u0098\7\n\2\2\u0098\u0099"+
+		"\5\16\b\2\u0099\u009a\7\13\2\2\u009a\u009b\5\36\20\2\u009b/\3\2\2\2\n"+
+		"\62<FSWaiu";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

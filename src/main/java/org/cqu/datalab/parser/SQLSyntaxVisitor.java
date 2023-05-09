@@ -29,6 +29,24 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDtype(SQLSyntaxParser.DtypeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#int_t}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInt_t(SQLSyntaxParser.Int_tContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#string_t}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString_t(SQLSyntaxParser.String_tContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#exprAtom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprAtom(SQLSyntaxParser.ExprAtomContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -40,6 +58,12 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitColumnName(SQLSyntaxParser.ColumnNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#command}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCommand(SQLSyntaxParser.CommandContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#identifierGroup}.
 	 * @param ctx the parse tree
@@ -88,6 +112,12 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitValueDefinition(SQLSyntaxParser.ValueDefinitionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#metaCommand}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMetaCommand(SQLSyntaxParser.MetaCommandContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#selectStmt}.
 	 * @param ctx the parse tree
