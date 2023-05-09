@@ -2,6 +2,7 @@ package org.cqu.datalab.visitor;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.cqu.datalab.executor.CreateTableExecutor;
+import org.cqu.datalab.executor.DropTableExecutor;
 import org.cqu.datalab.executor.SelectExecutor;
 import org.cqu.datalab.parser.SQLSyntaxBaseVisitor;
 import org.cqu.datalab.parser.SQLSyntaxParser;
@@ -68,5 +69,11 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
         List<String> identifiers = new ArrayList<>(Arrays.asList(visitIdentifierGroup(ctx.identifierGroup()).split(" ")));
         new SelectExecutor(visitTableName(ctx.tableName()), identifiers).execute();
         return super.visitSelectStmt(ctx);
+    }
+
+    @Override
+    public String visitDropTableStmt(SQLSyntaxParser.DropTableStmtContext ctx) {
+        new DropTableExecutor(visitTableName(ctx.tableName())).execute();
+        return super.visitDropTableStmt(ctx);
     }
 }

@@ -17,18 +17,20 @@ public class SQLSyntaxParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		SELECT=1, FROM=2, CREATE=3, TABLE=4, IF=5, NOT=6, EXISTS=7, DATETIME=8, 
-		DOUBLE=9, FLOAT=10, INT=11, INTEGER=12, STRING=13, TIMESTAMP=14, LONG=15, 
-		BOOLEAN=16, BOOL=17, ID=18, OPEN_P=19, CLOSE_P=20, COMMA=21, SEMICOLON=22, 
-		WS=23;
+		SELECT=1, FROM=2, CREATE=3, TABLE=4, DROP=5, IF=6, NOT=7, EXISTS=8, DATETIME=9, 
+		DOUBLE=10, FLOAT=11, INT=12, INTEGER=13, STRING=14, TIMESTAMP=15, LONG=16, 
+		BOOLEAN=17, BOOL=18, ID=19, OPEN_P=20, CLOSE_P=21, COMMA=22, SEMICOLON=23, 
+		WS=24;
 	public static final int
 		RULE_prog = 0, RULE_stat = 1, RULE_dtype = 2, RULE_tableName = 3, RULE_columnName = 4, 
 		RULE_identifierGroup = 5, RULE_tableColumnItem = 6, RULE_tableColumns = 7, 
-		RULE_tableDefinition = 8, RULE_selectStmt = 9, RULE_createTableStmt = 10;
+		RULE_tableDefinition = 8, RULE_selectStmt = 9, RULE_createTableStmt = 10, 
+		RULE_dropTableStmt = 11;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"prog", "stat", "dtype", "tableName", "columnName", "identifierGroup", 
-			"tableColumnItem", "tableColumns", "tableDefinition", "selectStmt", "createTableStmt"
+			"tableColumnItem", "tableColumns", "tableDefinition", "selectStmt", "createTableStmt", 
+			"dropTableStmt"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -36,15 +38,17 @@ public class SQLSyntaxParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, null, null, "'('", "')'", "','", "';'"
+			null, null, null, null, null, null, null, null, "'('", "')'", "','", 
+			"';'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "SELECT", "FROM", "CREATE", "TABLE", "IF", "NOT", "EXISTS", "DATETIME", 
-			"DOUBLE", "FLOAT", "INT", "INTEGER", "STRING", "TIMESTAMP", "LONG", "BOOLEAN", 
-			"BOOL", "ID", "OPEN_P", "CLOSE_P", "COMMA", "SEMICOLON", "WS"
+			null, "SELECT", "FROM", "CREATE", "TABLE", "DROP", "IF", "NOT", "EXISTS", 
+			"DATETIME", "DOUBLE", "FLOAT", "INT", "INTEGER", "STRING", "TIMESTAMP", 
+			"LONG", "BOOLEAN", "BOOL", "ID", "OPEN_P", "CLOSE_P", "COMMA", "SEMICOLON", 
+			"WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -122,19 +126,19 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(22);
-			stat();
 			setState(24);
+			stat();
+			setState(26);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SEMICOLON) {
 				{
-				setState(23);
+				setState(25);
 				match(SEMICOLON);
 				}
 			}
 
-			setState(26);
+			setState(28);
 			match(EOF);
 			}
 		}
@@ -156,6 +160,9 @@ public class SQLSyntaxParser extends Parser {
 		public CreateTableStmtContext createTableStmt() {
 			return getRuleContext(CreateTableStmtContext.class,0);
 		}
+		public DropTableStmtContext dropTableStmt() {
+			return getRuleContext(DropTableStmtContext.class,0);
+		}
 		public StatContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -171,21 +178,28 @@ public class SQLSyntaxParser extends Parser {
 		StatContext _localctx = new StatContext(_ctx, getState());
 		enterRule(_localctx, 2, RULE_stat);
 		try {
-			setState(30);
+			setState(33);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case SELECT:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(28);
+				setState(30);
 				selectStmt();
 				}
 				break;
 			case CREATE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(29);
+				setState(31);
 				createTableStmt();
+				}
+				break;
+			case DROP:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(32);
+				dropTableStmt();
 				}
 				break;
 			default:
@@ -232,7 +246,7 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32);
+			setState(35);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DATETIME) | (1L << DOUBLE) | (1L << FLOAT) | (1L << INT) | (1L << INTEGER) | (1L << STRING) | (1L << TIMESTAMP) | (1L << LONG) | (1L << BOOLEAN) | (1L << BOOL))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -274,7 +288,7 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(34);
+			setState(37);
 			match(ID);
 			}
 		}
@@ -308,7 +322,7 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(36);
+			setState(39);
 			match(ID);
 			}
 		}
@@ -350,21 +364,21 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(38);
+			setState(41);
 			match(ID);
-			setState(43);
+			setState(46);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(39);
+				setState(42);
 				match(COMMA);
-				setState(40);
+				setState(43);
 				match(ID);
 				}
 				}
-				setState(45);
+				setState(48);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -405,9 +419,9 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
+			setState(49);
 			columnName();
-			setState(47);
+			setState(50);
 			dtype();
 			}
 		}
@@ -451,21 +465,21 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
+			setState(52);
 			tableColumnItem();
-			setState(54);
+			setState(57);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(50);
+				setState(53);
 				match(COMMA);
-				setState(51);
+				setState(54);
 				tableColumnItem();
 				}
 				}
-				setState(56);
+				setState(59);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -505,11 +519,11 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(57);
+			setState(60);
 			match(OPEN_P);
-			setState(58);
+			setState(61);
 			tableColumns();
-			setState(59);
+			setState(62);
 			match(CLOSE_P);
 			}
 		}
@@ -550,13 +564,13 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(61);
-			match(SELECT);
-			setState(62);
-			identifierGroup();
-			setState(63);
-			match(FROM);
 			setState(64);
+			match(SELECT);
+			setState(65);
+			identifierGroup();
+			setState(66);
+			match(FROM);
+			setState(67);
 			tableName();
 			}
 		}
@@ -597,13 +611,13 @@ public class SQLSyntaxParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(66);
-			match(CREATE);
-			setState(67);
-			match(TABLE);
-			setState(68);
-			tableName();
 			setState(69);
+			match(CREATE);
+			setState(70);
+			match(TABLE);
+			setState(71);
+			tableName();
+			setState(72);
 			tableDefinition();
 			}
 		}
@@ -618,24 +632,68 @@ public class SQLSyntaxParser extends Parser {
 		return _localctx;
 	}
 
+	public static class DropTableStmtContext extends ParserRuleContext {
+		public TerminalNode DROP() { return getToken(SQLSyntaxParser.DROP, 0); }
+		public TerminalNode TABLE() { return getToken(SQLSyntaxParser.TABLE, 0); }
+		public TableNameContext tableName() {
+			return getRuleContext(TableNameContext.class,0);
+		}
+		public DropTableStmtContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_dropTableStmt; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SQLSyntaxVisitor ) return ((SQLSyntaxVisitor<? extends T>)visitor).visitDropTableStmt(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final DropTableStmtContext dropTableStmt() throws RecognitionException {
+		DropTableStmtContext _localctx = new DropTableStmtContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_dropTableStmt);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(74);
+			match(DROP);
+			setState(75);
+			match(TABLE);
+			setState(76);
+			tableName();
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\31J\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\32Q\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\3\2\3\2\5\2\33\n\2\3\2\3\2\3\3\3\3\5\3!\n\3\3\4\3\4\3\5\3\5\3\6"+
-		"\3\6\3\7\3\7\3\7\7\7,\n\7\f\7\16\7/\13\7\3\b\3\b\3\b\3\t\3\t\3\t\7\t\67"+
-		"\n\t\f\t\16\t:\13\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3\13\3\f\3\f\3"+
-		"\f\3\f\3\f\3\f\2\2\r\2\4\6\b\n\f\16\20\22\24\26\2\3\3\2\n\23\2B\2\30\3"+
-		"\2\2\2\4 \3\2\2\2\6\"\3\2\2\2\b$\3\2\2\2\n&\3\2\2\2\f(\3\2\2\2\16\60\3"+
-		"\2\2\2\20\63\3\2\2\2\22;\3\2\2\2\24?\3\2\2\2\26D\3\2\2\2\30\32\5\4\3\2"+
-		"\31\33\7\30\2\2\32\31\3\2\2\2\32\33\3\2\2\2\33\34\3\2\2\2\34\35\7\2\2"+
-		"\3\35\3\3\2\2\2\36!\5\24\13\2\37!\5\26\f\2 \36\3\2\2\2 \37\3\2\2\2!\5"+
-		"\3\2\2\2\"#\t\2\2\2#\7\3\2\2\2$%\7\24\2\2%\t\3\2\2\2&\'\7\24\2\2\'\13"+
-		"\3\2\2\2(-\7\24\2\2)*\7\27\2\2*,\7\24\2\2+)\3\2\2\2,/\3\2\2\2-+\3\2\2"+
-		"\2-.\3\2\2\2.\r\3\2\2\2/-\3\2\2\2\60\61\5\n\6\2\61\62\5\6\4\2\62\17\3"+
-		"\2\2\2\638\5\16\b\2\64\65\7\27\2\2\65\67\5\16\b\2\66\64\3\2\2\2\67:\3"+
-		"\2\2\28\66\3\2\2\289\3\2\2\29\21\3\2\2\2:8\3\2\2\2;<\7\25\2\2<=\5\20\t"+
-		"\2=>\7\26\2\2>\23\3\2\2\2?@\7\3\2\2@A\5\f\7\2AB\7\4\2\2BC\5\b\5\2C\25"+
-		"\3\2\2\2DE\7\5\2\2EF\7\6\2\2FG\5\b\5\2GH\5\22\n\2H\27\3\2\2\2\6\32 -8";
+		"\f\t\f\4\r\t\r\3\2\3\2\5\2\35\n\2\3\2\3\2\3\3\3\3\3\3\5\3$\n\3\3\4\3\4"+
+		"\3\5\3\5\3\6\3\6\3\7\3\7\3\7\7\7/\n\7\f\7\16\7\62\13\7\3\b\3\b\3\b\3\t"+
+		"\3\t\3\t\7\t:\n\t\f\t\16\t=\13\t\3\n\3\n\3\n\3\n\3\13\3\13\3\13\3\13\3"+
+		"\13\3\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22"+
+		"\24\26\30\2\3\3\2\13\24\2I\2\32\3\2\2\2\4#\3\2\2\2\6%\3\2\2\2\b\'\3\2"+
+		"\2\2\n)\3\2\2\2\f+\3\2\2\2\16\63\3\2\2\2\20\66\3\2\2\2\22>\3\2\2\2\24"+
+		"B\3\2\2\2\26G\3\2\2\2\30L\3\2\2\2\32\34\5\4\3\2\33\35\7\31\2\2\34\33\3"+
+		"\2\2\2\34\35\3\2\2\2\35\36\3\2\2\2\36\37\7\2\2\3\37\3\3\2\2\2 $\5\24\13"+
+		"\2!$\5\26\f\2\"$\5\30\r\2# \3\2\2\2#!\3\2\2\2#\"\3\2\2\2$\5\3\2\2\2%&"+
+		"\t\2\2\2&\7\3\2\2\2\'(\7\25\2\2(\t\3\2\2\2)*\7\25\2\2*\13\3\2\2\2+\60"+
+		"\7\25\2\2,-\7\30\2\2-/\7\25\2\2.,\3\2\2\2/\62\3\2\2\2\60.\3\2\2\2\60\61"+
+		"\3\2\2\2\61\r\3\2\2\2\62\60\3\2\2\2\63\64\5\n\6\2\64\65\5\6\4\2\65\17"+
+		"\3\2\2\2\66;\5\16\b\2\678\7\30\2\28:\5\16\b\29\67\3\2\2\2:=\3\2\2\2;9"+
+		"\3\2\2\2;<\3\2\2\2<\21\3\2\2\2=;\3\2\2\2>?\7\26\2\2?@\5\20\t\2@A\7\27"+
+		"\2\2A\23\3\2\2\2BC\7\3\2\2CD\5\f\7\2DE\7\4\2\2EF\5\b\5\2F\25\3\2\2\2G"+
+		"H\7\5\2\2HI\7\6\2\2IJ\5\b\5\2JK\5\22\n\2K\27\3\2\2\2LM\7\7\2\2MN\7\6\2"+
+		"\2NO\5\b\5\2O\31\3\2\2\2\6\34#\60;";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

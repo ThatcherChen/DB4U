@@ -76,4 +76,10 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitCreateTableStmt(SQLSyntaxParser.CreateTableStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#dropTableStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDropTableStmt(SQLSyntaxParser.DropTableStmtContext ctx);
 }

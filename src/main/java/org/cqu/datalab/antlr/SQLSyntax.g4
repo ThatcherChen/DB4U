@@ -6,6 +6,7 @@ prog    : stat SEMICOLON? EOF;
 
 stat    : selectStmt
         | createTableStmt
+        | dropTableStmt
         ;
 
 dtype   : DATETIME
@@ -31,3 +32,4 @@ tableDefinition : OPEN_P tableColumns CLOSE_P ;
 
 selectStmt      : SELECT identifierGroup FROM tableName ;
 createTableStmt : CREATE TABLE tableName tableDefinition ;
+dropTableStmt   : DROP TABLE tableName ;

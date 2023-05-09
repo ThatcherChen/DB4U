@@ -4,6 +4,7 @@ SELECT  : S E L E C T ;
 FROM    : F R O M ;
 CREATE  : C R E A T E ;
 TABLE   : T A B L E ;
+DROP    : D R O P ;
 IF      : I F ;
 NOT     : N O T ;
 EXISTS  : E X I S T S ;

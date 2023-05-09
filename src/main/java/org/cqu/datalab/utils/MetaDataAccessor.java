@@ -6,11 +6,10 @@ import java.util.*;
 
 public class MetaDataAccessor {
     private static final String DEFAULT_METADATA = "/home/czc/WorkSpace/DataProject2/database/metaData.csv";
-    private static final int SYNC_BOUND_COUNT = 5;
+    private static final int SYNC_BOUND_COUNT = 0;
     private static final MetaDataAccessor accessor = new MetaDataAccessor();
     private final String metaData;
     private final FileInputStream metaDataInput;
-    private final FileOutputStream metaDataOutput;
     private final StringBuffer metaBuffer = new StringBuffer();
     private int changeCount = 0;
 
@@ -18,19 +17,11 @@ public class MetaDataAccessor {
         return accessor;
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        sync();
-        super.finalize();
-    }
-
     public MetaDataAccessor() throws ExceptionInInitializerError{
         metaData = DEFAULT_METADATA;
         try {
             metaDataInput = new FileInputStream(metaData);
             loadIntoBuffer();
-            metaDataOutput = new FileOutputStream(metaData);
-            sync();
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError();
@@ -42,8 +33,6 @@ public class MetaDataAccessor {
         try {
             metaDataInput = new FileInputStream(metaData);
             loadIntoBuffer();
-            metaDataOutput = new FileOutputStream(metaData);
-            sync();
         } catch (Exception e) {
             e.printStackTrace();
             throw new ExceptionInInitializerError();
@@ -62,6 +51,7 @@ public class MetaDataAccessor {
 
     public void sync() {
         try {
+            FileOutputStream metaDataOutput = new FileOutputStream(metaData);
             metaDataOutput.write(metaBuffer.toString().getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +120,6 @@ public class MetaDataAccessor {
 
     public void dropTableProperty(String tableName) {
         Scanner scanner = new Scanner(metaBuffer.toString());
-        boolean dropStatus = false;
         while (scanner.hasNext()) {
             String[] curLine = scanner.nextLine().split(",");
             if (curLine[1].equals(tableName)) {
@@ -141,7 +130,6 @@ public class MetaDataAccessor {
                 if (changeCount >= SYNC_BOUND_COUNT) {
                     sync();
                 }
-                dropStatus = true;
             }
         }
     }

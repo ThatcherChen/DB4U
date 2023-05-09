@@ -78,7 +78,6 @@ public class DatabaseAccessor {
                 columnStringBuilder.deleteCharAt(columnStringBuilder.length()-1);
                 tableProperty.put("Columns", columnStringBuilder.toString());
                 metaDataAccessor.insertTableProperty(tableProperty);
-                metaDataAccessor.sync();
                 tableFile.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,15 +85,13 @@ public class DatabaseAccessor {
         }
     }
 
-    public boolean dropTable(String tableName) {
+    public void dropTable(String tableName) {
         MetaDataAccessor accessor = MetaDataAccessor.getAccessor();
         Map<String, String> property = accessor.getTableProperty(tableName);
         if (property != null) {
-            File tableFile = new File(property.get("FileName"));
+            File tableFile = new File(baseDir + property.get("FileName"));
             accessor.dropTableProperty(tableName);
-            accessor.sync();
-            return tableFile.delete();
+            tableFile.delete();
         }
-        return false;
     }
 }
