@@ -9,17 +9,16 @@ import java.util.stream.Collectors;
 
 public class Table {
     private static final int SYNC_BOUND_COUNT = 5;
+    private final File self;
     private final StringBuffer dataBuffer = new StringBuffer();
     private final FileInputStream inputStream;
-    private final FileOutputStream outputStream;
     private final int changeCount = 0;
 
     public Table(File self) throws ExceptionInInitializerError {
         try {
+            this.self = self;
             inputStream = new FileInputStream(self);
             loadIntoBuffer();
-            outputStream = new FileOutputStream(self);
-            sync();
         } catch (IOException e) {
             throw new ExceptionInInitializerError(e.toString());
         }
@@ -37,6 +36,7 @@ public class Table {
 
     public void sync() {
         try {
+            FileOutputStream outputStream = new FileOutputStream(self);
             outputStream.write(dataBuffer.toString().getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
