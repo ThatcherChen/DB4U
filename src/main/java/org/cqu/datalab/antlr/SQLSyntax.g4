@@ -8,6 +8,7 @@ stat    : selectStmt
         | createTableStmt
         | dropTableStmt
         | insertStmt
+        | updateStmt
         ;
 
 dtype   : DATETIME
@@ -28,7 +29,9 @@ columnName      : ID ;
 identifierGroup : ID (COMMA ID)* ;
 tableColumnItem : columnName dtype;
 tableColumns    : tableColumnItem (COMMA tableColumnItem)* ;
-valueCols       : ID (COMMA ID)* ;
+valueCols       : VALUE (COMMA VALUE)* ;
+assignItem      : ID EQUAL ID;
+updateAssignment: assignItem (COMMA assignItem)* ;
 
 tableDefinition : OPEN_P tableColumns CLOSE_P ;
 valueDefinition : OPEN_P valueCols CLOSE_P ;
@@ -36,4 +39,5 @@ valueDefinition : OPEN_P valueCols CLOSE_P ;
 selectStmt      : SELECT identifierGroup FROM tableName ;
 createTableStmt : CREATE TABLE tableName tableDefinition ;
 dropTableStmt   : DROP TABLE tableName ;
-insertStmt      : INSERT INTO tableName VALUES valueDefinition;
+insertStmt      : INSERT INTO tableName VALUES valueDefinition ;
+updateStmt      : UPDATE tableName SET updateAssignment ;

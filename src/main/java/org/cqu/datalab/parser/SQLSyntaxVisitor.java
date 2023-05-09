@@ -65,6 +65,18 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitValueCols(SQLSyntaxParser.ValueColsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#assignItem}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignItem(SQLSyntaxParser.AssignItemContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#updateAssignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpdateAssignment(SQLSyntaxParser.UpdateAssignmentContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -100,4 +112,10 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitInsertStmt(SQLSyntaxParser.InsertStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#updateStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpdateStmt(SQLSyntaxParser.UpdateStmtContext ctx);
 }

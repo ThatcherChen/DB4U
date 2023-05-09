@@ -68,7 +68,7 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     @Override
     public String visitValueCols(SQLSyntaxParser.ValueColsContext ctx) {
         StringBuilder builder = new StringBuilder();
-        for (TerminalNode node : ctx.ID()) {
+        for (TerminalNode node : ctx.VALUE()) {
             builder.append(node.getText());
             builder.append(",");
         }

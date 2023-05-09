@@ -7,6 +7,8 @@ TABLE   : T A B L E ;
 DROP    : D R O P ;
 INSERT  : I N S E R T ;
 VALUES  : V A L U E S ;
+UPDATE  : U P D A T E ;
+SET     : S E T ;
 INTO    : I N T O ;
 IF      : I F ;
 NOT     : N O T ;
@@ -24,7 +26,9 @@ BOOLEAN   : B O O L E A N ;
 BOOL      : B O O L ;
 
 ID          : ID_PART ;
+VALUE       : ([a-zA-Z] | DIGITAL | '_')+ ;
 
+EQUAL       : '=' ;
 OPEN_P      : '(' ;
 CLOSE_P     : ')' ;
 COMMA       : ',' ;
