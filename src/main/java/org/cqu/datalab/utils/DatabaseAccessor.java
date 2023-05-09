@@ -3,8 +3,6 @@ package org.cqu.datalab.utils;
 import org.cqu.datalab.data.Table;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +59,7 @@ public class DatabaseAccessor {
         return null;
     }
 
-    public boolean createTable(String tableName, List<String> columnsWithType) {
+    public void createTable(String tableName, List<String> columnsWithType) {
         MetaDataAccessor metaDataAccessor = MetaDataAccessor.getAccessor();
         Map<String, String> property = metaDataAccessor.getTableProperty(tableName);
         if (property == null) {
@@ -81,12 +79,11 @@ public class DatabaseAccessor {
                 tableProperty.put("Columns", columnStringBuilder.toString());
                 metaDataAccessor.insertTableProperty(tableProperty);
                 metaDataAccessor.sync();
-                return tableFile.createNewFile();
+                tableFile.createNewFile();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return false;
     }
 
     public boolean dropTable(String tableName) {

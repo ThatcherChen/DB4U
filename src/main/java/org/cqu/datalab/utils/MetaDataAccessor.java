@@ -60,14 +60,12 @@ public class MetaDataAccessor {
         }
     }
 
-    public boolean sync() {
+    public void sync() {
         try {
             metaDataOutput.write(metaBuffer.toString().getBytes(StandardCharsets.UTF_8));
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public static boolean init() {
@@ -115,7 +113,7 @@ public class MetaDataAccessor {
         return null;
     }
 
-    public boolean insertTableProperty(Map<String, String> tableProperty) {
+    public void insertTableProperty(Map<String, String> tableProperty) {
         try {
             String row = tableProperty.get("FileName") + "," +
                     tableProperty.get("TableName") + "," +
@@ -125,14 +123,12 @@ public class MetaDataAccessor {
             if (changeCount >= SYNC_BOUND_COUNT) {
                 sync();
             }
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public boolean dropTableProperty(String tableName) {
+    public void dropTableProperty(String tableName) {
         Scanner scanner = new Scanner(metaBuffer.toString());
         boolean dropStatus = false;
         while (scanner.hasNext()) {
@@ -148,6 +144,5 @@ public class MetaDataAccessor {
                 dropStatus = true;
             }
         }
-        return dropStatus;
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TableTest {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         DatabaseAccessor accessor = new DatabaseAccessor();
         List<String> columns = new ArrayList<>();
         columns.add("name:String");
