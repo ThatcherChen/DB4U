@@ -13,6 +13,8 @@ INTO    : I N T O ;
 IF      : I F ;
 NOT     : N O T ;
 EXISTS  : E X I S T S ;
+WHERE   : W H E R E ;
+DELETE  : D E L E T E ;
 
 DATETIME  : D A T E T I M E ;
 DOUBLE    : D O U B L E ;
@@ -27,6 +29,8 @@ BOOL      : B O O L ;
 
 ID          : ID_PART ;
 
+LESS        : '<' ;
+LARGER      : '>' ;
 EQUAL       : '=' ;
 OPEN_P      : '(' ;
 CLOSE_P     : ')' ;
@@ -34,7 +38,8 @@ COMMA       : ',' ;
 SEMICOLON   : ';' ;
 STAR        : '*' ;
 METAHEAD    : '!' ;
-
+LESSEQUAL   : '<=';
+LARGEREQUAL : '>=';
 
 INT_T       : DIGITAL+;
 L_S_STRING  : '\'' (('\'' '\'') | ('\\' '\'') | ~('\''))* '\'';

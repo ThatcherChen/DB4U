@@ -8,6 +8,7 @@ import org.cqu.datalab.parser.SQLSyntaxParser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     @Override
@@ -25,6 +26,21 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     public String visitCommand(SQLSyntaxParser.CommandContext ctx) {
         new CommandExecutor(ctx.getText()).execute();
         return null;
+    }
+
+    @Override
+    public String visitLogicalOperator(SQLSyntaxParser.LogicalOperatorContext ctx) {
+        return ctx.getText();
+    }
+
+    @Override
+    public String visitBoolExpr(SQLSyntaxParser.BoolExprContext ctx) {
+        return ctx.ID().getText() + "," + visitLogicalOperator(ctx.logicalOperator()) + "," + visitExprAtom(ctx.exprAtom()).split(":")[0];
+    }
+
+    @Override
+    public String visitWhereClause(SQLSyntaxParser.WhereClauseContext ctx) {
+        return visitBoolExpr(ctx.boolExpr());
     }
 
     @Override
@@ -115,7 +131,8 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     @Override
     public String visitSelectStmt(SQLSyntaxParser.SelectStmtContext ctx) {
         List<String> identifiers = new ArrayList<>(Arrays.asList(visitIdentifierGroup(ctx.identifierGroup()).split(" ")));
-        new SelectExecutor(visitTableName(ctx.tableName()), identifiers).execute();
+        if (ctx.whereClause() == null) new SelectExecutor(visitTableName(ctx.tableName()), identifiers, "").execute();
+        else new SelectExecutor(visitTableName(ctx.tableName()), identifiers, visitWhereClause(ctx.whereClause())).execute();
         return super.visitSelectStmt(ctx);
     }
 

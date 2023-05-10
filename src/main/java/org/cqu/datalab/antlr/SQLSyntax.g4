@@ -9,6 +9,7 @@ stat    : selectStmt
         | dropTableStmt
         | insertStmt
         | updateStmt
+        | deleteStmt
         | metaCommand
         ;
 
@@ -40,18 +41,29 @@ command         : ID ;
 identifierGroup : ID (COMMA ID)*
                 | STAR
                 ;
+
+logicalOperator : LESS
+                | LARGER
+                | LESSEQUAL
+                | LARGEREQUAL
+                | EQUAL
+                ;
+
 tableColumnItem : columnName dtype;
 tableColumns    : tableColumnItem (COMMA tableColumnItem)* ;
 valueCols       : exprAtom (COMMA exprAtom)* ;
 assignItem      : ID EQUAL ID;
 updateAssignment: assignItem (COMMA assignItem)* ;
+boolExpr        : ID logicalOperator exprAtom ;
+whereClause     : WHERE boolExpr;
 
 tableDefinition : OPEN_P tableColumns CLOSE_P ;
 valueDefinition : OPEN_P valueCols CLOSE_P ;
 
-metaCommand     : METAHEAD command;
-selectStmt      : SELECT identifierGroup FROM tableName ;
+metaCommand     : METAHEAD command ;
+selectStmt      : SELECT identifierGroup FROM tableName whereClause? ;
 createTableStmt : CREATE TABLE tableName tableDefinition ;
 dropTableStmt   : DROP TABLE tableName ;
 insertStmt      : INSERT INTO tableName VALUES valueDefinition ;
-updateStmt      : UPDATE tableName SET updateAssignment ;
+updateStmt      : UPDATE tableName SET updateAssignment whereClause? ;
+deleteStmt      : DELETE FROM tableName whereClause? ;

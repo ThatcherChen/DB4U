@@ -69,7 +69,7 @@ public class Table {
         return result;
     }
 
-    public void drop(Predicate<String> condition) {
+    public void delete(Predicate<String> condition) {
         List<String> result = new ArrayList<>();
         Scanner scanner = new Scanner(dataBuffer.toString());
         while (scanner.hasNext()) {

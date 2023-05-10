@@ -71,6 +71,12 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdentifierGroup(SQLSyntaxParser.IdentifierGroupContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#logicalOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicalOperator(SQLSyntaxParser.LogicalOperatorContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableColumnItem}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -100,6 +106,18 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUpdateAssignment(SQLSyntaxParser.UpdateAssignmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#boolExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExpr(SQLSyntaxParser.BoolExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#whereClause}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhereClause(SQLSyntaxParser.WhereClauseContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#tableDefinition}.
 	 * @param ctx the parse tree
@@ -148,4 +166,10 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUpdateStmt(SQLSyntaxParser.UpdateStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#deleteStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeleteStmt(SQLSyntaxParser.DeleteStmtContext ctx);
 }

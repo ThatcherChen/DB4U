@@ -7,14 +7,17 @@ import org.cqu.datalab.utils.MetaDataAccessor;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SelectExecutor implements AbstractExecutor{
     private final String tableName;
     private final List<String> identifiers;
-    public SelectExecutor(String tableName, List<String> identifiers) {
+    private final String rawCondition;
+    public SelectExecutor(String tableName, List<String> identifiers, String rawCondition) {
         this.identifiers = identifiers;
         this.tableName = tableName;
+        this.rawCondition = rawCondition;
     }
     @Override
     public void execute() {
@@ -39,23 +42,68 @@ public class SelectExecutor implements AbstractExecutor{
                 return;
             }
 
-            // Output column name
-            identifiers.forEach((identifier) -> {
-                System.out.print(" " + identifier);
-            });
-
-            System.out.println();
+            Predicate<String> filter = generateFilter(allColumnNames);
 
             List<String> result = fetchBackTable.select((line) -> {
                 String[] propertyGroup = line.split(",");
                 return identifiers.stream()
                         .map((identifier) -> propertyGroup[allColumnNames.indexOf(identifier)])
                         .reduce("", ((s, s2) -> s + " " + s2));
-            }, (any) -> true);
+            }, filter);
 
-            result.forEach(System.out::println);
+            if (result.size() > 0) {
+                identifiers.forEach((identifier) -> {
+                    System.out.print(" " + identifier);
+                });
+                System.out.println();
+                result.forEach(System.out::println);
+            }
+
+            System.out.println(result.size() + " rows in set.");
         } else {
             System.out.println("Error: Table " + tableName + " does not exist.");
         }
+    }
+
+    private Predicate<String> generateFilter(List<String> allColumnNames) {
+        Predicate<String> result = (any) -> true;
+        String[] infoArr = rawCondition.split(",");
+        String property = infoArr[0], op = infoArr[1], val = infoArr[2];
+        switch (op) {
+            case "=":
+                result = (line) -> {
+                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
+                    return Integer.parseInt(curVal) == Integer.parseInt(val);
+                };
+                break;
+            case "<":
+                result = (line) -> {
+                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
+                    return Integer.parseInt(curVal) < Integer.parseInt(val);
+                };
+                break;
+            case ">":
+                result = (line) -> {
+                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
+                    return Integer.parseInt(curVal) > Integer.parseInt(val);
+                };
+                break;
+            case ">=":
+                result = (line) -> {
+                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
+                    return Integer.parseInt(curVal) >= Integer.parseInt(val);
+                };
+                break;
+            case "<=":
+                result = (line) -> {
+                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
+                    return Integer.parseInt(curVal) <= Integer.parseInt(val);
+                };
+                break;
+            default:
+                result = (any) -> true;
+                break;
+        }
+        return result;
     }
 }
