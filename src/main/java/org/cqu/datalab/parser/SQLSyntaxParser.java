@@ -838,11 +838,11 @@ public class SQLSyntaxParser extends Parser {
 	}
 
 	public static class AssignItemContext extends ParserRuleContext {
-		public List<TerminalNode> ID() { return getTokens(SQLSyntaxParser.ID); }
-		public TerminalNode ID(int i) {
-			return getToken(SQLSyntaxParser.ID, i);
-		}
+		public TerminalNode ID() { return getToken(SQLSyntaxParser.ID, 0); }
 		public TerminalNode EQUAL() { return getToken(SQLSyntaxParser.EQUAL, 0); }
+		public ExprAtomContext exprAtom() {
+			return getRuleContext(ExprAtomContext.class,0);
+		}
 		public AssignItemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -865,7 +865,7 @@ public class SQLSyntaxParser extends Parser {
 			setState(118);
 			match(EQUAL);
 			setState(119);
-			match(ID);
+			exprAtom();
 			}
 		}
 		catch (RecognitionException re) {
@@ -1495,7 +1495,7 @@ public class SQLSyntaxParser extends Parser {
 		"f\31\3\2\2\2gl\5\30\r\2hi\7\"\2\2ik\5\30\r\2jh\3\2\2\2kn\3\2\2\2lj\3\2"+
 		"\2\2lm\3\2\2\2m\33\3\2\2\2nl\3\2\2\2ot\5\f\7\2pq\7\"\2\2qs\5\f\7\2rp\3"+
 		"\2\2\2sv\3\2\2\2tr\3\2\2\2tu\3\2\2\2u\35\3\2\2\2vt\3\2\2\2wx\7\34\2\2"+
-		"xy\7\37\2\2yz\7\34\2\2z\37\3\2\2\2{\u0080\5\36\20\2|}\7\"\2\2}\177\5\36"+
+		"xy\7\37\2\2yz\5\f\7\2z\37\3\2\2\2{\u0080\5\36\20\2|}\7\"\2\2}\177\5\36"+
 		"\20\2~|\3\2\2\2\177\u0082\3\2\2\2\u0080~\3\2\2\2\u0080\u0081\3\2\2\2\u0081"+
 		"!\3\2\2\2\u0082\u0080\3\2\2\2\u0083\u0084\7\34\2\2\u0084\u0085\5\26\f"+
 		"\2\u0085\u0086\5\f\7\2\u0086#\3\2\2\2\u0087\u0088\7\20\2\2\u0088\u0089"+

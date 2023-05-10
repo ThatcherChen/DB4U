@@ -11,10 +11,17 @@ import org.cqu.datalab.parser.SQLSyntaxParser;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static final String VER = "1.2";
+    public static final String COMPILE_PLATFORM = System.getProperty("os.name");
+    public static final String JAVA_VER = System.getProperty("java.version");
+    public static final String COMPILE_USER = System.getProperty("user.name");
+    public static void main(String[] args) {
         DBVisitor visitor = new DBVisitor();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to DB4U! Ver1.0beta cc0de");
+        System.out.println("Welcome to DB4U!");
+        System.out.printf("Server version: DB4U-%s-%s-%s-%s\n", VER, COMPILE_PLATFORM, COMPILE_USER, JAVA_VER);
+        System.out.println("Copyright (c) 2023, cc0de and others.");
+        System.out.println("Type !help for more information.");
         System.out.print("> ");
         while (true) {
             if (scanner.hasNext()) {

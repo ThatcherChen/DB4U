@@ -38,6 +38,7 @@ public class Table {
         try {
             FileOutputStream outputStream = new FileOutputStream(self);
             outputStream.write(dataBuffer.toString().getBytes(StandardCharsets.UTF_8));
+            outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,11 +70,18 @@ public class Table {
         return result;
     }
 
-    public void delete(Predicate<String> condition) {
+    public long delete(Predicate<String> condition) {
         List<String> result = new ArrayList<>();
         Scanner scanner = new Scanner(dataBuffer.toString());
         while (scanner.hasNext()) {
             result.add(scanner.nextLine());
         }
+        long affectedRows = result.stream().filter(condition).count();
+        result.stream().filter(condition)
+                .forEach((item) -> {
+                    dataBuffer.delete(dataBuffer.indexOf(item), dataBuffer.indexOf("\n", dataBuffer.indexOf(item))+1);
+                });
+        sync();
+        return affectedRows;
     }
 }

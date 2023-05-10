@@ -42,7 +42,9 @@ public class SelectExecutor implements AbstractExecutor{
                 return;
             }
 
-            Predicate<String> filter = generateFilter(allColumnNames);
+            Predicate<String> filter = (any) -> true;
+
+            if (!rawCondition.isEmpty()) filter = WhereClauseHandler.generateFilter(rawCondition, allColumnNames);
 
             List<String> result = fetchBackTable.select((line) -> {
                 String[] propertyGroup = line.split(",");
@@ -60,50 +62,9 @@ public class SelectExecutor implements AbstractExecutor{
             }
 
             System.out.println(result.size() + " rows in set.");
+            System.out.println();
         } else {
             System.out.println("Error: Table " + tableName + " does not exist.");
         }
-    }
-
-    private Predicate<String> generateFilter(List<String> allColumnNames) {
-        Predicate<String> result = (any) -> true;
-        String[] infoArr = rawCondition.split(",");
-        String property = infoArr[0], op = infoArr[1], val = infoArr[2];
-        switch (op) {
-            case "=":
-                result = (line) -> {
-                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
-                    return Integer.parseInt(curVal) == Integer.parseInt(val);
-                };
-                break;
-            case "<":
-                result = (line) -> {
-                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
-                    return Integer.parseInt(curVal) < Integer.parseInt(val);
-                };
-                break;
-            case ">":
-                result = (line) -> {
-                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
-                    return Integer.parseInt(curVal) > Integer.parseInt(val);
-                };
-                break;
-            case ">=":
-                result = (line) -> {
-                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
-                    return Integer.parseInt(curVal) >= Integer.parseInt(val);
-                };
-                break;
-            case "<=":
-                result = (line) -> {
-                    String curVal = line.split(",")[allColumnNames.indexOf(property)];
-                    return Integer.parseInt(curVal) <= Integer.parseInt(val);
-                };
-                break;
-            default:
-                result = (any) -> true;
-                break;
-        }
-        return result;
     }
 }

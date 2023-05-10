@@ -52,7 +52,7 @@ logicalOperator : LESS
 tableColumnItem : columnName dtype;
 tableColumns    : tableColumnItem (COMMA tableColumnItem)* ;
 valueCols       : exprAtom (COMMA exprAtom)* ;
-assignItem      : ID EQUAL ID;
+assignItem      : ID EQUAL exprAtom;
 updateAssignment: assignItem (COMMA assignItem)* ;
 boolExpr        : ID logicalOperator exprAtom ;
 whereClause     : WHERE boolExpr;

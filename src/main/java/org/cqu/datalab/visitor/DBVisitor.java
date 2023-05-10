@@ -8,7 +8,6 @@ import org.cqu.datalab.parser.SQLSyntaxParser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     @Override
@@ -24,8 +23,7 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
 
     @Override
     public String visitCommand(SQLSyntaxParser.CommandContext ctx) {
-        new CommandExecutor(ctx.getText()).execute();
-        return null;
+        return ctx.getText();
     }
 
     @Override
@@ -121,6 +119,18 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     }
 
     @Override
+    public String visitAssignItem(SQLSyntaxParser.AssignItemContext ctx) {
+        // TODO
+        return super.visitAssignItem(ctx);
+    }
+
+    @Override
+    public String visitUpdateAssignment(SQLSyntaxParser.UpdateAssignmentContext ctx) {
+        // TODO
+        return super.visitUpdateAssignment(ctx);
+    }
+
+    @Override
     public String visitInsertStmt(SQLSyntaxParser.InsertStmtContext ctx) {
         String rowData = visitValueDefinition(ctx.valueDefinition());
         List<String> valueList = Arrays.asList(rowData.split(","));
@@ -140,5 +150,23 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     public String visitDropTableStmt(SQLSyntaxParser.DropTableStmtContext ctx) {
         new DropTableExecutor(visitTableName(ctx.tableName())).execute();
         return super.visitDropTableStmt(ctx);
+    }
+
+    @Override
+    public String visitMetaCommand(SQLSyntaxParser.MetaCommandContext ctx) {
+        new CommandExecutor(visitCommand(ctx.command())).execute();
+        return null;
+    }
+
+    @Override
+    public String visitDeleteStmt(SQLSyntaxParser.DeleteStmtContext ctx) {
+        new DeleteExecutor(visitTableName(ctx.tableName()), ctx.whereClause() == null ? "" : visitWhereClause(ctx.whereClause())).execute();
+        return super.visitDeleteStmt(ctx);
+    }
+
+    @Override
+    public String visitUpdateStmt(SQLSyntaxParser.UpdateStmtContext ctx) {
+        // TODO
+        return super.visitUpdateStmt(ctx);
     }
 }
