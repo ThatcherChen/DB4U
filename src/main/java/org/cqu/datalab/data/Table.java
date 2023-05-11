@@ -105,7 +105,7 @@ public class Table {
                     }
                     builder.deleteCharAt(builder.length()-1);
                     builder.append("\n");
-                    dataBuffer.insert(startIndex, builder.toString());
+                    dataBuffer.insert(startIndex, builder);
                 });
         sync();
         return affectedRows;

@@ -20,7 +20,7 @@ public class DatabaseAccessor {
         this.baseDir = baseDir;
     }
 
-    public static boolean initDatabase() {
+    public static void initDatabase() {
         try {
             File base = new File(DEFAULT_BASEDIR);
             File meta = new File(MetaDataAccessor.DEFAULT_METADATA);
@@ -30,11 +30,9 @@ public class DatabaseAccessor {
             if (!meta.exists()) {
                 meta.createNewFile();
             }
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public static boolean initDatabase(String preset) {
