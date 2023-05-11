@@ -8,4 +8,4 @@ A small database written in Java for course project.
 `java -jar ${FileName}.jar`
 
 ## License
-AGPL 2.0
+AGPL 3.0
