@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class MetaDataAccessor {
-    private static final String DEFAULT_METADATA = DatabaseAccessor.DEFAULT_BASEDIR + "metaData.csv";
+    public static final String DEFAULT_METADATA = DatabaseAccessor.DEFAULT_BASEDIR + "metaData.csv";
     private static final int SYNC_BOUND_COUNT = 0;
     private static final MetaDataAccessor accessor = new MetaDataAccessor();
     private final String metaData;
@@ -56,30 +56,6 @@ public class MetaDataAccessor {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static boolean init() {
-        try {
-            File metaDataFile = new File(DEFAULT_METADATA);
-            if (!metaDataFile.exists()) {
-                return metaDataFile.createNewFile();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public static boolean init(String preset) {
-        try {
-            File metaDataFile = new File(preset);
-            if (!metaDataFile.exists()) {
-                return metaDataFile.createNewFile();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public Map<String, String> getTableProperty(String tableName) {

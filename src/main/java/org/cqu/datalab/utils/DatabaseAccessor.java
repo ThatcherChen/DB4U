@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class DatabaseAccessor {
-    public static final String DEFAULT_BASEDIR = "/home/czc/WorkSpace/DataProject2/database/";
+    public static final String DEFAULT_BASEDIR = "./database/";
     private final String baseDir;
 
     public DatabaseAccessor() {
@@ -23,9 +23,14 @@ public class DatabaseAccessor {
     public static boolean initDatabase() {
         try {
             File base = new File(DEFAULT_BASEDIR);
+            File meta = new File(MetaDataAccessor.DEFAULT_METADATA);
             if (!base.exists()) {
-                return base.mkdirs();
+                base.mkdirs();
             }
+            if (!meta.exists()) {
+                meta.createNewFile();
+            }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,9 +40,14 @@ public class DatabaseAccessor {
     public static boolean initDatabase(String preset) {
         try {
             File base = new File(preset);
+            File meta = new File(preset + "metaData.csv");
             if (!base.exists()) {
-                return base.mkdirs();
+                base.mkdirs();
             }
+            if (!meta.exists()) {
+                meta.createNewFile();
+            }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
