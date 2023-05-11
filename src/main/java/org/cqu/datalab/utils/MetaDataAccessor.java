@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class MetaDataAccessor {
-    private static final String DEFAULT_METADATA = "/home/czc/WorkSpace/DataProject2/database/metaData.csv";
+    private static final String DEFAULT_METADATA = DatabaseAccessor.DEFAULT_BASEDIR + "metaData.csv";
     private static final int SYNC_BOUND_COUNT = 0;
     private static final MetaDataAccessor accessor = new MetaDataAccessor();
     private final String metaData;

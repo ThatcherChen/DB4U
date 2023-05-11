@@ -120,14 +120,17 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
 
     @Override
     public String visitAssignItem(SQLSyntaxParser.AssignItemContext ctx) {
-        // TODO
-        return super.visitAssignItem(ctx);
+        return ctx.ID().getText() + "," + visitExprAtom(ctx.exprAtom());
     }
 
     @Override
     public String visitUpdateAssignment(SQLSyntaxParser.UpdateAssignmentContext ctx) {
-        // TODO
-        return super.visitUpdateAssignment(ctx);
+        StringBuilder builder = new StringBuilder();
+        for (SQLSyntaxParser.AssignItemContext ctx_t : ctx.assignItem()) {
+            builder.append(visitAssignItem(ctx_t));
+            builder.append("/");
+        }
+        return builder.toString();
     }
 
     @Override
@@ -166,7 +169,7 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
 
     @Override
     public String visitUpdateStmt(SQLSyntaxParser.UpdateStmtContext ctx) {
-        // TODO
+        new UpdateExecutor(visitTableName(ctx.tableName()), visitUpdateAssignment(ctx.updateAssignment()), visitWhereClause(ctx.whereClause())).execute();
         return super.visitUpdateStmt(ctx);
     }
 }

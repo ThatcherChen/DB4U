@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class DatabaseAccessor {
-    private static final String DEFAULT_BASEDIR = "/home/czc/WorkSpace/DataProject2/database/";
+    public static final String DEFAULT_BASEDIR = "/home/czc/WorkSpace/DataProject2/database/";
     private final String baseDir;
 
     public DatabaseAccessor() {

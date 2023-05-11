@@ -84,4 +84,30 @@ public class Table {
         sync();
         return affectedRows;
     }
+
+    public long update(Map<Integer, String> assignList, Predicate<String> condition) {
+        List<String> result = new ArrayList<>();
+        Scanner scanner = new Scanner(dataBuffer.toString());
+        while (scanner.hasNext()) {
+            result.add(scanner.nextLine());
+        }
+        long affectedRows = result.stream().filter(condition).count();
+        result.stream().filter(condition)
+                .forEach((line) -> {
+                    int startIndex = dataBuffer.indexOf(line);
+                    dataBuffer.delete(startIndex, dataBuffer.indexOf("\n", startIndex)+1);
+                    String[] elements = line.split(",");
+                    assignList.forEach((key, value) -> elements[key] = value);
+                    StringBuilder builder = new StringBuilder();
+                    for (String element : elements) {
+                        builder.append(element);
+                        builder.append(",");
+                    }
+                    builder.deleteCharAt(builder.length()-1);
+                    builder.append("\n");
+                    dataBuffer.insert(startIndex, builder.toString());
+                });
+        sync();
+        return affectedRows;
+    }
 }
