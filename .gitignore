@@ -39,3 +39,6 @@ build/
 
 ### Test Files ###
 /database/
+
+### Maven Generated Files ###
+dependency-reduced-pom.xml
