@@ -1,6 +1,7 @@
 package org.cqu.datalab.executor;
 
 import org.cqu.datalab.utils.DatabaseAccessor;
+import org.cqu.datalab.utils.DbHolder;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ public class CreateTableExecutor implements AbstractExecutor {
     @Override
     public void execute() {
         DatabaseAccessor accessor = new DatabaseAccessor();
-        accessor.createTable(tableName, columns);
+        if (!DbHolder.getInstance().selected()) System.out.println("Error: No database selected.");
+        else {
+            accessor.createTable(tableName, columns, DbHolder.getInstance().getDatabaseName());
+        }
     }
 }

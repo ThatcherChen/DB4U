@@ -2,6 +2,7 @@ package org.cqu.datalab.executor;
 
 import org.cqu.datalab.data.Table;
 import org.cqu.datalab.utils.DatabaseAccessor;
+import org.cqu.datalab.utils.DbHolder;
 import org.cqu.datalab.utils.MetaDataAccessor;
 
 import java.util.Arrays;
@@ -19,11 +20,15 @@ public class InsertExecutor implements AbstractExecutor{
     public void execute() {
         // type check
         MetaDataAccessor accessor = MetaDataAccessor.getAccessor();
-        if (valueList.size() != accessor.getTableProperty(tableName).get("Columns").split("/").length) {
+        if (!DbHolder.getInstance().selected()) {
+            System.out.println("Error: No database selected.");
+            return;
+        }
+        if (valueList.size() != accessor.getTableProperty(tableName, DbHolder.getInstance().getDatabaseName()).get("Columns").split("/").length) {
             System.out.println("Error: number of values does not match");
             return;
         }
-        List<String> rowType = Arrays.stream(accessor.getTableProperty(tableName).get("Columns").split("/"))
+        List<String> rowType = Arrays.stream(accessor.getTableProperty(tableName, DbHolder.getInstance().getDatabaseName()).get("Columns").split("/"))
                 .map((varWithType) -> varWithType.split(":")[1])
                 .collect(Collectors.toList());
         for (int i = 0; i < valueList.size(); i++) {
@@ -37,7 +42,7 @@ public class InsertExecutor implements AbstractExecutor{
         List<String> var = valueList.stream().map((valueAndType) -> valueAndType.split(":")[0]).collect(Collectors.toList());
 
         DatabaseAccessor databaseAccessor = new DatabaseAccessor();
-        Table table = databaseAccessor.getTable(tableName);
+        Table table = databaseAccessor.getTable(tableName, DbHolder.getInstance().getDatabaseName());
 
         table.insert(var);
     }

@@ -24,11 +24,15 @@ public class DatabaseAccessor {
         try {
             File base = new File(DEFAULT_BASEDIR);
             File meta = new File(MetaDataAccessor.DEFAULT_METADATA);
+            File dbMeta = new File(DatabaseAccessor.DEFAULT_BASEDIR + "db_meta");
             if (!base.exists()) {
                 base.mkdirs();
             }
             if (!meta.exists()) {
                 meta.createNewFile();
+            }
+            if (!dbMeta.exists()) {
+                dbMeta.createNewFile();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,9 +56,9 @@ public class DatabaseAccessor {
         return false;
     }
 
-    public Table getTable(String tableName) {
+    public Table getTable(String tableName, String dbName) {
         MetaDataAccessor metaDataAccessor = MetaDataAccessor.getAccessor();
-        Map<String, String> property = metaDataAccessor.getTableProperty(tableName);
+        Map<String, String> property = metaDataAccessor.getTableProperty(tableName, dbName);
         if (property != null) {
             String fileName = property.get("FileName");
             File tableFile = new File(baseDir + fileName);
@@ -67,9 +71,9 @@ public class DatabaseAccessor {
         return null;
     }
 
-    public void createTable(String tableName, List<String> columnsWithType) {
+    public void createTable(String tableName, List<String> columnsWithType, String dbName) {
         MetaDataAccessor metaDataAccessor = MetaDataAccessor.getAccessor();
-        Map<String, String> property = metaDataAccessor.getTableProperty(tableName);
+        Map<String, String> property = metaDataAccessor.getTableProperty(tableName, dbName);
         if (property == null) {
             Random random = new Random();
             String fileName = String.valueOf(random.nextInt());
@@ -85,6 +89,7 @@ public class DatabaseAccessor {
                 }
                 columnStringBuilder.deleteCharAt(columnStringBuilder.length()-1);
                 tableProperty.put("Columns", columnStringBuilder.toString());
+                tableProperty.put("DbName", dbName);
                 metaDataAccessor.insertTableProperty(tableProperty);
                 tableFile.createNewFile();
             } catch (Exception e) {
@@ -93,12 +98,12 @@ public class DatabaseAccessor {
         }
     }
 
-    public void dropTable(String tableName) {
+    public void dropTable(String tableName, String dbName) {
         MetaDataAccessor accessor = MetaDataAccessor.getAccessor();
-        Map<String, String> property = accessor.getTableProperty(tableName);
+        Map<String, String> property = accessor.getTableProperty(tableName, dbName);
         if (property != null) {
             File tableFile = new File(baseDir + property.get("FileName"));
-            accessor.dropTableProperty(tableName);
+            accessor.dropTableProperty(tableName, dbName);
             tableFile.delete();
         }
     }

@@ -2,6 +2,7 @@ package org.cqu.datalab.executor;
 
 import org.cqu.datalab.data.Table;
 import org.cqu.datalab.utils.DatabaseAccessor;
+import org.cqu.datalab.utils.DbHolder;
 import org.cqu.datalab.utils.MetaDataAccessor;
 
 import java.util.*;
@@ -20,10 +21,14 @@ public class UpdateExecutor implements AbstractExecutor{
     public void execute() {
         DatabaseAccessor accessor = new DatabaseAccessor();
         MetaDataAccessor metaDataAccessor = MetaDataAccessor.getAccessor();
-        Table fetchBackTable = accessor.getTable(tableName);
+        if (!DbHolder.getInstance().selected()) {
+            System.out.println("Error: No database selected.");
+            return;
+        }
+        Table fetchBackTable = accessor.getTable(tableName, DbHolder.getInstance().getDatabaseName());
         if (fetchBackTable != null) {
             List<String> allColumnNames = Arrays
-                    .stream(metaDataAccessor.getTableProperty(tableName).get("Columns").split("/"))
+                    .stream(metaDataAccessor.getTableProperty(tableName, DbHolder.getInstance().getDatabaseName()).get("Columns").split("/"))
                     .map((varWithType) -> varWithType.substring(0, varWithType.indexOf(':')))
                     .collect(Collectors.toList());
 
@@ -36,7 +41,7 @@ public class UpdateExecutor implements AbstractExecutor{
 
             // type check
             Map<String, String> varType = new HashMap<>();
-            Arrays.stream(metaDataAccessor.getTableProperty(tableName).get("Columns").split("/"))
+            Arrays.stream(metaDataAccessor.getTableProperty(tableName, DbHolder.getInstance().getDatabaseName()).get("Columns").split("/"))
                     .forEach((varTypePair) -> {
                         String[] varAndType = varTypePair.split(":");
                         varType.put(varAndType[0], varAndType[1]);

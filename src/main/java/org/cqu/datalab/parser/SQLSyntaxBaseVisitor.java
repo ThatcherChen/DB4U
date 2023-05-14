@@ -221,4 +221,11 @@ public class SQLSyntaxBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitCreateDbStmt(SQLSyntaxParser.CreateDbStmtContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitUseStmt(SQLSyntaxParser.UseStmtContext ctx) { return visitChildren(ctx); }
 }

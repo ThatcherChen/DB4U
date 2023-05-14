@@ -13,6 +13,7 @@ stat    : selectStmt
         | showTablesStmt
         | createDbStmt
         | metaCommand
+        | useStmt
         ;
 
 dtype   : DATETIME
@@ -72,3 +73,4 @@ updateStmt      : UPDATE tableName SET updateAssignment whereClause? ;
 deleteStmt      : DELETE FROM tableName whereClause? ;
 showTablesStmt  : SHOW TABLES ;
 createDbStmt    : CREATE DATABASE databaseName ;
+useStmt         : USE databaseName ;

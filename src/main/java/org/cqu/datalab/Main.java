@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.cqu.datalab.error.ErrorHandler;
 import org.cqu.datalab.utils.DatabaseAccessor;
+import org.cqu.datalab.utils.DbHolder;
 import org.cqu.datalab.utils.MetaDataAccessor;
 import org.cqu.datalab.visitor.DBVisitor;
 import org.cqu.datalab.parser.SQLSyntaxLexer;
@@ -30,7 +31,7 @@ public class Main {
         System.out.printf("Server version: DB4U-%s-%s-%s-%s\n", VER, COMPILE_PLATFORM, COMPILE_USER, JAVA_VER);
         System.out.println("Copyright (c) 2023, cc0de and others.");
         System.out.println("Type !help for more information.");
-        System.out.print("> ");
+        printPrompt(DbHolder.getInstance().getDatabaseName());
         while (true) {
             if (scanner.hasNext()) {
                 SQLSyntaxLexer lexer = new SQLSyntaxLexer(CharStreams.fromString(scanner.nextLine()));
@@ -44,7 +45,7 @@ public class Main {
                 } catch (Exception e) {
                     // Ignore some information from ANTLR Runtime.
                 }
-                System.out.print("> ");
+                printPrompt(DbHolder.getInstance().getDatabaseName());
             }
         }
     }
@@ -52,6 +53,12 @@ public class Main {
     public static void selfCheck() {
         File baseDir = new File(DatabaseAccessor.DEFAULT_BASEDIR);
         File meta = new File(MetaDataAccessor.DEFAULT_METADATA);
-        if (!baseDir.exists() || !meta.exists()) DatabaseAccessor.initDatabase();
+        File dbMeta = new File(DatabaseAccessor.DEFAULT_BASEDIR + "db_meta");
+        if (!baseDir.exists() || !meta.exists() || !dbMeta.exists()) DatabaseAccessor.initDatabase();
+    }
+
+    public static void printPrompt(String dbName) {
+        if (dbName.isEmpty()) System.out.print("DB4U [(none)]> ");
+        else System.out.printf("DB4U [%s]> ", dbName);
     }
 }

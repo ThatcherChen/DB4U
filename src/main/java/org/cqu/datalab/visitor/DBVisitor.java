@@ -104,6 +104,11 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     }
 
     @Override
+    public String visitDatabaseName(SQLSyntaxParser.DatabaseNameContext ctx) {
+        return ctx.getText();
+    }
+
+    @Override
     public String visitInt_t(SQLSyntaxParser.Int_tContext ctx) {
         return ctx.getText();
     }
@@ -177,5 +182,17 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
     public String visitShowTablesStmt(SQLSyntaxParser.ShowTablesStmtContext ctx) {
         new ShowTablesExecutor().execute();
         return null;
+    }
+
+    @Override
+    public String visitCreateDbStmt(SQLSyntaxParser.CreateDbStmtContext ctx) {
+        new CreateDatabaseExecutor(visitDatabaseName(ctx.databaseName())).execute();
+        return super.visitCreateDbStmt(ctx);
+    }
+
+    @Override
+    public String visitUseStmt(SQLSyntaxParser.UseStmtContext ctx) {
+        new UseExecutor(visitDatabaseName(ctx.databaseName())).execute();
+        return super.visitUseStmt(ctx);
     }
 }
