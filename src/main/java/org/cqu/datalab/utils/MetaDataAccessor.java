@@ -79,6 +79,16 @@ public class MetaDataAccessor {
         return null;
     }
 
+    public List<String> getAllTable() {
+        Scanner scanner = new Scanner(metaBuffer.toString());
+        List<String> allTables = new ArrayList<>();
+        while (scanner.hasNext()) {
+            String[] table = scanner.nextLine().split(",");
+            allTables.add(table[1]);
+        }
+        return allTables;
+    }
+
     public void insertTableProperty(Map<String, String> tableProperty) {
         try {
             String row = tableProperty.get("FileName") + "," +

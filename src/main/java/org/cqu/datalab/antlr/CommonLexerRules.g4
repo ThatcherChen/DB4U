@@ -15,6 +15,9 @@ NOT     : N O T ;
 EXISTS  : E X I S T S ;
 WHERE   : W H E R E ;
 DELETE  : D E L E T E ;
+SHOW    : S H O W;
+TABLES  : T A B L E S ;
+DATABASE: D A T A B A S E ;
 
 DATETIME  : D A T E T I M E ;
 DOUBLE    : D O U B L E ;

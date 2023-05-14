@@ -10,6 +10,8 @@ stat    : selectStmt
         | insertStmt
         | updateStmt
         | deleteStmt
+        | showTablesStmt
+        | createDbStmt
         | metaCommand
         ;
 
@@ -35,6 +37,7 @@ exprAtom: string_t
         ;
 
 tableName       : ID ;
+databaseName    : ID ;
 columnName      : ID ;
 command         : ID ;
 
@@ -67,3 +70,5 @@ dropTableStmt   : DROP TABLE tableName ;
 insertStmt      : INSERT INTO tableName VALUES valueDefinition ;
 updateStmt      : UPDATE tableName SET updateAssignment whereClause? ;
 deleteStmt      : DELETE FROM tableName whereClause? ;
+showTablesStmt  : SHOW TABLES ;
+createDbStmt    : CREATE DATABASE databaseName ;
