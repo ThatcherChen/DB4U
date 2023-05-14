@@ -53,6 +53,12 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTableName(SQLSyntaxParser.TableNameContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#databaseName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDatabaseName(SQLSyntaxParser.DatabaseNameContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SQLSyntaxParser#columnName}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -172,4 +178,16 @@ public interface SQLSyntaxVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDeleteStmt(SQLSyntaxParser.DeleteStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#showTablesStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitShowTablesStmt(SQLSyntaxParser.ShowTablesStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SQLSyntaxParser#createDbStmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCreateDbStmt(SQLSyntaxParser.CreateDbStmtContext ctx);
 }

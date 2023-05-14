@@ -172,4 +172,10 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
         new UpdateExecutor(visitTableName(ctx.tableName()), visitUpdateAssignment(ctx.updateAssignment()), visitWhereClause(ctx.whereClause())).execute();
         return super.visitUpdateStmt(ctx);
     }
+
+    @Override
+    public String visitShowTablesStmt(SQLSyntaxParser.ShowTablesStmtContext ctx) {
+        new ShowTablesExecutor().execute();
+        return null;
+    }
 }
