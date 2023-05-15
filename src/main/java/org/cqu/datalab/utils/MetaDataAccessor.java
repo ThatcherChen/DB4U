@@ -144,4 +144,8 @@ public class MetaDataAccessor {
         String[] dbs = dbMetaBuffer.toString().split(",");
         return Arrays.asList(dbs).contains(dbName);
     }
+
+    public List<String> getAllDatabases() {
+        return Arrays.asList(dbMetaBuffer.toString().split(","));
+    }
 }

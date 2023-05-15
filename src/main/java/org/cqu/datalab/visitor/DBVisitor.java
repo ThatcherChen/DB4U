@@ -195,4 +195,10 @@ public class DBVisitor extends SQLSyntaxBaseVisitor<String> {
         new UseExecutor(visitDatabaseName(ctx.databaseName())).execute();
         return super.visitUseStmt(ctx);
     }
+
+    @Override
+    public String visitShowDatabaseStmt(SQLSyntaxParser.ShowDatabaseStmtContext ctx) {
+        new ShowDatabasesExecutor().execute();
+        return super.visitShowDatabaseStmt(ctx);
+    }
 }

@@ -14,6 +14,7 @@ stat    : selectStmt
         | createDbStmt
         | metaCommand
         | useStmt
+        | showDatabaseStmt
         ;
 
 dtype   : DATETIME
