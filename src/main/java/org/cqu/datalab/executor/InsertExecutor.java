@@ -44,6 +44,11 @@ public class InsertExecutor implements AbstractExecutor{
         DatabaseAccessor databaseAccessor = new DatabaseAccessor();
         Table table = databaseAccessor.getTable(tableName, DbHolder.getInstance().getDatabaseName());
 
+        if (table == null) {
+            System.out.println("Error: Table \"" + tableName + "\" does not exists.");
+            return;
+        }
+
         table.insert(var);
     }
 }
