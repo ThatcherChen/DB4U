@@ -74,3 +74,4 @@ deleteStmt      : DELETE FROM tableName whereClause? ;
 showTablesStmt  : SHOW TABLES ;
 createDbStmt    : CREATE DATABASE databaseName ;
 useStmt         : USE databaseName ;
+showDatabaseStmt: SHOW DATABASES ;
